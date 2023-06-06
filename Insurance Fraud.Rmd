@@ -354,6 +354,271 @@ Certain features are numeric yet may better serve our models as categorical. Thi
 ```{python}
 
 
+print(fraud_v2['BodilyInjuries'].unique())
+
+
+```
+
+
+
+
+<br/><br/>
+
+The above outputs indicate that both NumberOfVehcicles and BodilyInjuries would be best as type categorical. We will create a function that converts numerical data types to categorical. Then the function will be applied to the selected numerical features.
+
+<br/><br/>
+
+create function
+
+
+
+```{python}
+
+
+def convert_to_cat(df, column_name):
+  df[column_name]=df[column_name].astype('category')
+
+
+
+```
+
+
+
+
+```{python}
+
+
+convert_to_cat(fraud_v2, 'NumberOfVehicles') 
+
+convert_to_cat(fraud_v2, 'BodilyInjuries') 
+
+
+
+```
+
+
+
+```{python}
+
+
+fraud_v2[['NumberOfVehicles', 'BodilyInjuries']].info()
+
+
+
+```
+
+<br/><br/>
+
+Both features are now of type category
+
+<br/><br/>
+
+
+```{python}
+
+print('*************Incident Time Unique Values*************')
+
+print(fraud_v2['IncidentTime'].unique())
+
+
+
+```
+
+
+<br/><br/>
+
+IncidentTime has unique values that would warrant it becoming categorical, though the many levels would not be optimal for use in our modeling. We can remedy this by placing unique time values into bins using a Python dictionary. This will reduce the number of levels.
+
+<br/><br/>
+
+
+
+```{python}
+
+
+time_day={
+  
+  5:'early morning', 6:'early morning',7:'early morning',  8:'early morning',9:'late morning', 10: 'late morning', 11: 'late morning', 12:'early afternoon', 13:'early afternoon', 14:'early afternoon', 15:'early afternoon',16:'late afternoon', 17:'late afternoon', 18:'evening',
+  19:'evening', 20:'night', 1:'night', 2:'night', 3:'night', 4:'night', 21:'night', 22:'night', 23:'night', 24:'night'
+}
+
+
+
+```
+
+
+
+
+```{python}
+
+
+fraud_v2['IncidentPeriodDay']=fraud_v2['IncidentTime'].map(time_day)
+
+
+
+```
+
+
+
+
+
+
+```{python}
+
+
+print('***Incident Period Day Value Counts***')
+
+print(fraud_v2['IncidentPeriodDay'].value_counts())
+
+
+
+```
+
+
+
+
+<br/><br/>
+
+We find from the value count output for the new feature IncidentPeriodDay that incident times have been placed into six unique periods of the day.
+
+
+
+
+<br/><br/>
+
+Date features used in creatingnew features are no longer required and will be removed from the data set
+
+<br/><br/>
+
+
+```{python}
+
+
+
+fraud_v3=fraud_v3.drop(['DateOfIncident', 'DateOfPolicyCoverage', 'IncidentTime'], axis=1)
+
+
+
+
+```
+
+
+
+<br/><br/>
+
+For purposes of classification algorithms and visualizations we'll need to convert all categorical columns (Object Data Type) to the category data type. This will be accomplished by creating a function to identify non-numerical columns and converting them to the category data type.
+
+<br/><br/>
+
+
+
+```{python}
+
+def convert_cats(df):
+      cats = []
+      for col in df.columns:
+            if is_numeric_dtype(df[col]):
+                  pass
+            else:
+                  cats.append(col)
+      cat_indicies = []
+      for col in cats:
+            df[col] = df[col].astype('category')
+
+
+
+
+
+```
+
+
+
+
+```{python}
+
+convert_cats(fraud_v3)
+
+
+
+
+```
+
+
+
+```{python}
+
+
+print('*****************fraud_v3 Information*****************')
+
+fraud_v3.info()
+
+
+
+```
+
+
+
+
+<br/><br/>
+
+From the above output we observe that all object data types are now type categorical.
+
+<br/><br/>
+
+
+
+
+```{python}
+
+
+count_plts_1=fraud_v3.filter(["TypeOfIncident", "TypeOfCollission","ReportedFraud"], axis=1)
+
+
+
+
+```
+
+
+
+
+```{python}
+
+
+fig = plt.figure(figsize=(15, 10))
+fig.suptitle('Categorical Counts-1', fontsize=18)
+#sns.set(xlabel=None)
+#sns.set(font_scale=0.5)
+sns.set_style("dark")
+
+
+plt.subplot(131)
+plt.title('Type of Incident', fontsize=16)
+ct_1=sns.countplot(data = count_plts_1, x = 'TypeOfIncident')
+ct_1.tick_params(axis='x', which='major', labelsize=11)
+ct_1.tick_params(axis='x', labelrotation=60 )
+ct_1.set(xlabel=None) 
+
+
+
+plt.subplot(132)
+plt.title('Type of Collision', fontsize=16)
+ct_2=sns.countplot(data = count_plts_1, x = 'TypeOfCollission')
+ct_2.tick_params(axis='x', which='major', labelsize=11)
+ct_2.tick_params(labelrotation=60)
+ct_2.set(xlabel=None) 
+
+
+
+plt.subplot(133)
+plt.title('Reported Fraud', fontsize=16)
+ct_3=sns.countplot(data = count_plts_1, x = 'ReportedFraud')
+ct_3.tick_params(axis='x', which='major', labelsize=11)
+#ct_3.tick_params(labelrotation=60)
+ct_3.set(xlabel=None) 
+
+
+
+plt.subplots_adjust(wspace=0.45)
 
 
 
@@ -366,6 +631,39 @@ Certain features are numeric yet may better serve our models as categorical. Thi
 
 
 
+plt.show()
+plt.clf()
+
+
+
+```
+
+
+
+
+```{python}
+
+my_tab=pd.crosstab(index=fraud_v3["TypeOfIncident"], columns=fraud_v3["TypeOfCollission"], normalize=True).round(2)
+
+
+
+```
+
+
+
+
+```{python}
+
+fig = plt.figure(figsize=(13, 13))
+
+sns.heatmap(my_tab, cmap="BuGn",cbar=False, annot=True,linewidth=0.3)
+
+plt.yticks(rotation=0)
+plt.xticks(rotation=60)
+
+plt.title('Type of Incident vs Type of Collision', fontsize=20)
+plt.xlabel('TypeOfCollision', fontsize=15)
+plt.ylabel('TypeOIncident', fontsize=15)
 
 
 
@@ -377,12 +675,19 @@ Certain features are numeric yet may better serve our models as categorical. Thi
 ```{python}
 
 
-
-
+plt.show()
+plt.clf()
 
 
 ```
 
+
+
+<br/><br/>
+
+We observe from the cross table that the 'unknown' type of collision is only associated with a small number of incident types related to collisions. These data points will be retained by renaming the "unknown" column to "none".
+
+<br/><br/>
 
 
 ```{python}
@@ -391,20 +696,9 @@ Certain features are numeric yet may better serve our models as categorical. Thi
 
 
 
-
 ```
 
 
-
-
-```{python}
-
-
-
-
-
-
-```
 
 
 
