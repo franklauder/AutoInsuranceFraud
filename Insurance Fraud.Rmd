@@ -1,0 +1,412 @@
+---
+title: "Insurance Fraud"
+author: "Frank Laudert"
+date: "2023-06-06"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+```{r}
+
+library(rmarkdown)
+
+library(reticulate)
+
+
+
+```
+
+
+
+```{python}
+
+
+
+import pandas as pd
+
+import pickle
+
+from pandas.api.types import is_numeric_dtype
+
+import datetime
+
+from datetime import date
+
+from dateutil.relativedelta import relativedelta
+
+import numpy as np
+
+import matplotlib.pyplot as plt
+
+import seaborn as sns
+
+import plotly.express as px
+
+import plotly.io as pio
+
+import matplotlib.patches as mpatches
+
+from plotnine import *
+
+import plotnine
+
+import scipy
+
+
+
+```
+
+
+
+# Introduction
+
+
+
+
+Insurance fraud is a concern of many sectors such as health care, homeowners, and automobile. Insurance fraud is not only costly to insurers but also affects non fraudulent policy holders.
+
+This analysis will focus on fraud within the auto insurance industry in India. The data used for this project was downloaded from Kaggle. <https://www.kaggle.com/>
+
+Our goal is to use classification models for predicting which auto insurance claims are fraudulent. Several classification models will be assessed on their ability to successfully predict actual fraud.
+
+The following programs were used for this project.
+
+Python 3.10.10 <br/><br/> R 4.2.2 (Specific Visualizations) <br/><br/> RStudio 2023.03.1+446 (For document output)
+
+<br/><br/>
+
+<br/><br/>
+
+
+# Exploratory Data Analysis
+
+
+<br/><br/>
+
+The data downloaded came in five data sets. We will review each data set for suitability of being merged into one data set.
+
+<br/><br/>
+
+```{python}
+
+
+print('************Train_Claim_p Information************')
+
+Train_Claim_p.info()
+
+
+
+
+
+
+
+```
+
+
+
+
+```{python}
+
+
+
+
+print('************Train_Policy_p Information************')
+
+Train_Policy_p.info()
+
+
+
+```
+
+
+
+
+```{python}
+
+
+print('************Train_Demographics_p Information************')
+
+Train_Demographics_p.info()
+
+
+
+```
+
+
+
+
+```{python}
+
+
+
+print('**********Traindata_with_Targeet_p Information**********')
+
+Traindata_with_Target_p.info()
+
+
+
+
+```
+
+
+
+
+```{python}
+
+
+print('************Train_Vehicle_p Information************')
+
+Train_Vehicle_p.info()
+
+
+```
+
+
+
+
+
+```{python}
+
+
+print('*************Train_Vehicle_p First 25 Rows*************')
+
+Train_Vehicle_p.head(25)
+
+
+
+```
+
+
+
+
+<br/><br/> <br/><br/>
+
+The data sets train claim, train policy, train demographics, and train with target are ready to be merged into one data set.
+
+Viewing the first twenty-five rows of the Train Vehicle data column VehicleAttribute we can see that it has multiple repeating rows as each customerID is as associated with Vehicle Model, Vehicle Make, Vehicle ID, and Vehicle YOM. The number of rows is 115344 which is four times the rows of the other data sets. This data set will have to be modified before it can be merged with the other data sets. Each level should be an individual feature matching to its corresponding level in the VehicleAtributeDetails feature. This will be accomplished by making the Train Vehicle data set wider. We will spread out the Vehicle Attribute feature so as each level will become a feature. This we make a new data set that is shorter and wider.
+
+<br/><br/> <br/><br/>
+
+
+
+
+
+
+```{python}
+
+
+train_vehicle_wide=Train_Vehicle_p.pivot(index='CustomerID',columns='VehicleAttribute',values='VehicleAttributeDetails').reset_index()
+
+
+
+```
+
+
+
+```{python}
+
+
+print('************train_vehicle_wide Information************')
+
+train_vehicle_wide.info()
+
+
+
+```
+
+
+
+
+```{python}
+
+
+
+print('*************train_vehicle_wide first 50 rows*************')
+
+
+train_vehicle_wide.head(50)
+
+
+
+```
+
+
+
+
+<br/><br/>
+
+We have taken the data from train vehicle and created a new data set called train vehicle wide. This new data set has four new columns and 28836 rows which now matches the other four data sets. We are now ready to merge all data sets.
+
+<br/><br/>
+
+
+```{python}
+
+fraud=Train_Claim_p.merge(Train_Demographics_p, on="CustomerID")\
+.merge(Train_Policy_p, on="CustomerID")\
+.merge(train_vehicle_wide, on="CustomerID")\
+.merge(Traindata_with_Target_p, on="CustomerID")
+
+
+
+```
+
+
+
+```{python}
+
+
+
+print('*******************fraud Information*******************')
+
+fraud.info()
+
+
+
+
+
+
+```
+
+
+
+
+## Feature Engineering/Cleaning
+
+
+Feature engineering includes several steps.
+
+First is feature creation. We create new variables from existing features which will help our model and data visualization.
+
+Secondly, we can transform features from one representation to another. An example would be transforming a feature that is numerical to a type categorical.
+
+Cleaning is the process of viewing the features and if something is not adding up with a feature, we can remove the values creating the problem or remove the feature entirely. An example is null values. We can replace a null value with another value, remove null values from the data set, or as mentioned before, remove the feature entirely.
+
+<br/><br/>
+
+
+
+
+
+
+
+```{python}
+
+fraud_v2['DateOfIncident']=pd.to_datetime(fraud_v2['DateOfIncident'])
+
+
+
+```
+
+
+
+```{python}
+
+fraud_v2['DateOfPolicyCoverage']=pd.to_datetime(fraud_v2['DateOfPolicyCoverage'])
+
+
+
+```
+
+
+```{python}
+
+
+fraud_v2['dayOfWeek'] = fraud_v2["DateOfIncident"].dt.day_name()
+
+
+
+```
+
+
+
+
+```{python}
+
+
+
+
+fraud_v2['dayOfWeek'].value_counts(normalize=True).round(2)
+
+
+
+
+```
+
+
+
+
+
+<br/><br/>
+
+Certain features are numeric yet may better serve our models as categorical. This can be assessed by checking unique values of these features
+
+<br/><br/>
+
+
+
+
+```{python}
+
+
+
+
+
+```
+
+
+
+
+```{python}
+
+
+
+
+
+
+```
+
+
+
+
+```{python}
+
+
+
+
+
+
+```
+
+
+
+```{python}
+
+
+
+
+
+
+```
+
+
+
+
+```{python}
+
+
+
+
+
+
+```
+
+
+
+
+
