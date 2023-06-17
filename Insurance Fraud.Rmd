@@ -693,10 +693,846 @@ We observe from the cross table that the 'unknown' type of collision is only ass
 ```{python}
 
 
+fraud_v4['TypeOfCollission'] = fraud_v4['TypeOfCollission'].replace(['?'], 'None')
+
 
 
 
 ```
+
+
+
+
+```{python}
+
+
+plt.figure(figsize=(16,10))
+#plt.title("Type of Collision-Changed")
+ax=sns.countplot(data=fraud_v4, x='TypeOfCollission')
+#plt.tick_params(label_rotation=45)
+ax.tick_params(axis='both', which='major', labelsize=11)
+ax.set_title("Type of Collision-Changed", size=22)
+ax.set(xlabel=None)
+ax.set(ylabel=None)
+sns.set_style("dark")
+
+ax.annotate('Figure ##',
+
+            xy = (1.0, -0.2),
+
+            xycoords='axes fraction',
+
+            ha='right',
+
+            va="center",
+
+            fontsize=10)
+            
+fig.tight_layout()
+
+
+
+
+```
+
+
+```{python}
+
+
+plt.show()
+plt.clf()
+
+
+```
+
+
+
+```{python}
+
+
+count_plts_2=fraud_v4.filter(['Witnesses', 'BodilyInjuries','PropertyDamage','NumberOfVehicles', 
+'IncidentState', 'AuthoritiesContacted',"SeverityOfIncident"], axis=1)
+
+
+```
+
+
+
+```{python}
+
+
+
+fig = plt.figure(figsize=(6, 6))
+fig.tight_layout(pad=1.30,h_pad=4, w_pad=3)
+fig.suptitle('Categorical Review-Two', fontsize=11)
+sns.set_style("dark")
+
+
+
+
+
+plt.subplot(331)
+plt.title('Witnesses', fontsize=8, y=0.90)
+dt_1=sns.countplot(data = count_plts_2, x = 'Witnesses')
+dt_1.tick_params(axis='both', which='major', labelsize=4)
+dt_1.tick_params(axis='x',labelrotation=35)
+dt_1.set(xlabel=None) 
+dt_1.set(ylabel=None) 
+
+
+
+
+
+plt.subplot(332)
+plt.title('Bodily Injuries',fontsize=8, y=0.90)
+dt_2=sns.countplot(data = count_plts_2, x = 'BodilyInjuries')
+dt_2.tick_params(axis='both', which='major', labelsize=6)
+#dt_2.tick_params(axis='x',labelrotation=35)
+dt_2.set(xlabel=None) 
+dt_2.set(ylabel=None) 
+
+
+plt.subplot(333)
+plt.title('Property Damage',fontsize=8, y=0.90)
+dt_3=sns.countplot(data = count_plts_2, x = 'PropertyDamage')
+dt_3.tick_params(axis='both', which='major', labelsize=6)
+#dt_3.tick_params(axis='x',labelrotation=35)
+dt_3.set(xlabel=None) 
+dt_3.set(ylabel=None) 
+
+plt.subplot(334)
+plt.title('Number Of Vehicles',fontsize=6, y=0.80)
+dt_4=sns.countplot(data = count_plts_2, x = 'NumberOfVehicles')
+dt_4.tick_params(axis='both', which='major', labelsize=6)
+#dt_4.tick_params(axis='x',labelrotation=45)
+dt_4.set(xlabel=None) 
+dt_4.set(ylabel=None) 
+
+plt.subplot(335)
+plt.title('Incident State',fontsize=8, y=0.90)
+dt_5=sns.countplot(data = count_plts_2, x = 'IncidentState')
+dt_5.tick_params(axis='both', which='major', labelsize=6)
+dt_5.tick_params(axis='x',labelrotation=90)
+dt_5.set(xlabel=None) 
+dt_5.set(ylabel=None) 
+
+plt.subplot(336)
+plt.title('Authorities Contacted',fontsize=8, y=0.90)
+dt_6=sns.countplot(data = count_plts_2, x = 'AuthoritiesContacted')
+dt_6.tick_params(axis='both', which='major', labelsize=6)
+dt_6.tick_params(axis='x',labelrotation=90)
+dt_6.set(xlabel=None) 
+dt_6.set(ylabel=None) 
+
+plt.subplot(337)
+plt.title('SeverityOfIncident',fontsize=8, y=0.90)
+dt_7=sns.countplot(data = count_plts_2, x ='SeverityOfIncident')
+dt_7.tick_params(axis='both', which='major', labelsize=6)
+dt_7.tick_params(axis='x',labelrotation=90)
+dt_7.set(xlabel=None) 
+dt_7.set(ylabel=None) 
+
+
+plt.subplots_adjust(wspace=01.0, hspace=2.0)
+
+
+```
+
+
+
+
+
+```{python}
+
+
+plt.show()
+plt.clf()
+
+
+
+```
+
+
+
+
+From *figure 4* we detect certain features that must be dealt with due to missing values. First, the property damage feature will be dropped due to many observations having no answer which is denoted by a question mark.
+
+<br/><br/>
+
+
+```{python}
+
+
+
+fraud_v5=fraud_v5.drop(['PropertyDamage'], axis=1)
+
+
+```
+
+
+
+
+<br/><br/>
+
+Next, the category MISSINGVALUE from the Witnesses feature will be dropped.
+
+<br/><br/>
+
+
+```{python}
+
+
+
+fraud_v5['Witnesses']=fraud_v5['Witnesses'].cat.remove_categories("MISSINGVALUE")
+
+
+
+```
+
+
+
+```{python}
+
+
+plt.figure(figsize=(14,8))
+#plt.title("Type of Collision-Changed")
+ax=sns.countplot(data=fraud_v5, x='Witnesses')
+#plt.tick_params(label_rotation=45)
+ax.set_title("Witnesses-Changed", size=20)
+ax.set(xlabel=None)
+ax.set(ylabel=None)
+ax.tick_params(axis='both', which='major', labelsize=14)
+sns.set_style("dark")
+
+ax.annotate('Figure ##',
+
+            xy = (1.0, -0.2),
+
+            xycoords='axes fraction',
+
+            ha='right',
+
+            va="center",
+
+            fontsize=10)
+            
+fig.tight_layout()
+
+
+```
+
+
+
+
+
+
+
+```{python}
+
+
+count_plts_3=fraud_v5.filter(['PoliceReport', 'InsuredGender','InsuredEducationLevel', 'InsurancePolicyState','InsuredRelationship', 'dayOfWeek'], axis=1)
+
+
+
+```
+
+
+
+```{python}
+
+
+fig = plt.figure(figsize=(10, 6))
+fig.tight_layout(pad=1.40,h_pad=4, w_pad=3)
+fig.suptitle('Categorical Review-Three', fontsize=13)
+#sns.set(font_scale=0.5)
+sns.set_style("dark")
+
+
+
+
+
+plt.subplot(231)
+plt.title('Police Report', fontsize=8, y=0.90)
+et_1=sns.countplot(data = count_plts_3, x = 'PoliceReport')
+et_1.tick_params(axis='both', which='major', labelsize=6)
+et_1.tick_params(axis='x',labelrotation=75)
+et_1.set(xlabel=None) 
+et_1.set(ylabel=None) 
+
+
+
+
+
+
+plt.subplot(232)
+plt.title('Insured Gender',fontsize=8, y=0.90)
+et_2=sns.countplot(data = count_plts_3, x = 'InsuredGender')
+et_2.tick_params(axis='both', which='major', labelsize=6)
+et_2.tick_params(axis='x',labelrotation=75)
+et_2.set(xlabel=None) 
+et_2.set(ylabel=None) 
+
+
+
+plt.subplot(233)
+plt.title('Insurance Policy State',fontsize=8, y=0.90)
+et_4=sns.countplot(data = count_plts_3, x = 'InsurancePolicyState')
+et_4.tick_params(axis='both', which='major', labelsize=6)
+et_4.tick_params(axis='x',labelrotation=70)
+et_4.set(xlabel=None) 
+
+plt.subplot(234)
+plt.title('Insured Education Level',fontsize=7, y=0.90)
+et_3=sns.countplot(data = count_plts_3, x = 'InsuredEducationLevel')
+et_3.tick_params(axis='both', which='major', labelsize=6)
+et_3.tick_params(axis='x',labelrotation=90)
+et_3.set(xlabel=None) 
+et_3.set(ylabel=None) 
+
+plt.subplot(235)
+plt.title('Insured Relationship',fontsize=8, y=0.90)
+et_5=sns.countplot(data = count_plts_3, x = 'InsuredRelationship')
+et_5.tick_params(axis='both', which='major', labelsize=6)
+et_5.tick_params(axis='x',labelrotation=90)
+et_5.set(xlabel=None) 
+et_5.set(ylabel=None) 
+
+
+
+plt.subplot(236)
+plt.title('Day of Week',fontsize=8, y=0.90)
+et_6=sns.countplot(data = count_plts_3, x = 'dayOfWeek')
+et_6.tick_params(axis='both', which='major', labelsize=6)
+et_6.tick_params(axis='x',labelrotation=90)
+et_6.set(xlabel=None) 
+et_6.set(ylabel=None) 
+
+
+plt.subplots_adjust(wspace=01.0, hspace=1.4)
+
+
+
+
+```
+
+
+
+```{python}
+
+
+
+plt.show()
+plt.clf()
+
+
+
+```
+
+
+
+```{python}
+
+
+
+fraud_v5['Witnesses']=fraud_v5['Witnesses'].cat.remove_unused_categories()
+
+
+```
+
+
+
+Figure *Figure 6* informs us that there are additional categorical features which must be either cleaned or dropped. First, the feature Police Report has close to 10000 missing values (denoted by a question mark). This feature will be dropped.
+
+<br/><br/>
+
+
+
+
+```{python}
+
+
+fraud_v6=fraud_v6.drop(['PoliceReport'], axis=1)
+
+
+
+```
+
+
+
+
+```{python}
+
+
+The next feature requiring attention is InsuredGender. There are a small number of missing values, denoted by NA. This category will be removed from InsuredGender. The omission of this small count category will have no effect on our models.
+
+<br/><br/>
+
+
+
+```
+
+
+
+```{python}
+
+
+fraud_v6['InsuredGender']=fraud_v6['InsuredGender'].cat.remove_categories("NA")
+
+
+
+```
+
+
+```{python}
+
+
+fraud_v6['InsuredGender']=fraud_v6['InsuredGender'].cat.remove_unused_categories()
+
+
+
+```
+
+
+
+```{python}
+
+
+plt.figure(figsize=(14,10))
+#plt.title("Type of Collision-Changed")
+ax=sns.countplot(data=fraud_v6, x='InsuredGender')
+#plt.tick_params(label_rotation=45)
+ax.set_title("Insured Gender-Changed", size=25)
+ax.set(xlabel=None)
+ax.set(ylabel=None)
+ax.tick_params(axis='both',labelsize = 15)
+sns.set_style("dark")
+
+ax.annotate('Figure ##',
+
+            xy = (1.0, -0.2),
+
+            xycoords='axes fraction',
+
+            ha='right',
+
+            va="center",
+
+            fontsize=10)
+            
+fig.tight_layout()
+
+
+
+
+```
+
+
+
+
+```{python}
+
+
+plt.show()
+plt.clf()
+
+
+
+```
+
+
+
+
+
+```{python}
+
+
+premium_missing=fraud_v6[fraud_v6['PolicyAnnualPremium']==-1]
+
+
+
+```
+
+
+
+```{python}
+
+
+#tick_params(labelrotation=70)
+
+
+plt.figure(figsize=(16,6))
+#plt.title("Type of Collision-Changed")
+ax=sns.countplot(data=fraud_v6, x='VehicleMake')
+#plt.tick_params(label_rotation=45)
+ax.set_title("Vehicle Make", size=25)
+ax.set(xlabel=None)
+ax.set(ylabel=None)
+ax.tick_params(axis='x',labelrotation=60,labelsize =13)
+ax.tick_params(axis='y', labelsize=13)
+sns.set_style("dark")
+
+ax.annotate('Figure ##',
+
+            xy = (1.0, -0.2),
+
+            xycoords='axes fraction',
+
+            ha='right',
+
+            va="center",
+
+            fontsize=10)
+            
+fig.tight_layout()
+
+
+```
+
+
+
+```{python}
+
+plt.show()
+plt.clf()
+
+
+
+```
+
+
+
+<br/><br/>
+
+VehicleMake has a small number of missing values (denoted by '???'). The category '???' will be removed from the feature.
+
+<br/><br/>
+
+
+
+```{python}
+
+
+fraud_v7['VehicleMake']=fraud_v7['VehicleMake'].cat.remove_categories("???")
+
+
+```
+
+
+
+
+```{python}
+
+fraud_v7['VehicleMake']=fraud_v7['VehicleMake'].cat.remove_unused_categories()
+
+
+
+```
+
+
+
+
+```{python}
+
+
+
+vehicle_count['count']=1
+
+
+```
+
+
+```{python}
+
+
+
+veh_mk=vehicle_count.groupby('VehicleMake')['count'].agg('count').reset_index()
+
+
+```
+
+
+```{python}
+
+
+plt.figure(figsize=(16,10))
+
+fig, axes=plt.subplots()
+
+line_colors=['blue', 'cyan', 'green', 'red','skyblue','maroon', 'salmon', 'yellow', 
+            'orange','lightgreen','darkviolet', 'fuchsia','darkmagenta','lime' ]
+            
+axes.hlines(veh_mk['VehicleMake'], xmin=0,
+            xmax=veh_mk['count'],colors=line_colors)
+            
+axes.plot(veh_mk['count'],veh_mk['VehicleMake'],"o")
+          
+axes.set_xlim(0)
+
+#plt.xlabel('Reported Fraude')
+#plt.ylabel('Vehchle Make')
+axes.tick_params(axis='both', which='major', labelsize=10)
+plt.title('Make of Vehicle Count', fontsize=20)
+
+
+
+
+```
+
+
+
+```{python}
+
+
+plt.show()
+plt.clf()
+
+
+
+```
+
+
+<br/><br/>
+
+*Figure 9* displays the VechicleMake feature with no missing values.
+
+<br/><br/>
+
+Filtering for any PolicyAnnualPremium value that is equal to -1 we find 141 values returned. From the Attribute Information pdf provided with the data set we know that -1 represents a missing value. All observations with -1 will be removed.
+
+<br/><br/>
+
+<br/><br/>
+
+
+
+
+```{python}
+
+fraud_v7=fraud_v7[fraud_v7['PolicyAnnualPremium']!=-1]
+
+
+```
+
+
+
+
+```{python}
+
+
+print('**Policy Annual Premium Shape**')
+
+fraud_v7[fraud_v7['PolicyAnnualPremium']==-1].shape
+
+
+```
+
+<br/><br/>
+
+From the size output we can observe all values of -1 have been removed.
+
+<br/><br/>
+
+
+```{python}
+
+
+
+count_plts_4=fraud_v7.filter(['InsuredOccupation', 'InsuredHobbies','VehicleMake'], axis=1)
+
+
+```
+
+<br/><br/>
+
+Certain visualizations require numeric only data. We'll create a date set that contains only numeric data types.
+
+<br/><br/>
+
+```{python}
+
+#select only the numeric columns in the DataFrame
+
+numeric_data=fraud_v7.select_dtypes(include=np.number)
+
+
+
+```
+
+
+
+```{python}
+
+
+
+numeric_data=numeric_data.drop(['InsuredZipCode', 'InsurancePolicyNumber'], axis=1)
+
+
+```
+
+
+
+```{python}
+
+
+#display data type of each variable in DataFrame
+
+
+print("******************Numeric Data Types******************")
+
+print(numeric_data.dtypes)
+
+
+```
+
+The data set numeric_data only has features of numeric data types as seen from the above output.
+
+<br/><br/>
+
+```{python}
+
+
+plt.figure(figsize=(10, 7))
+
+#sns.set(font_scale=3)
+
+
+plt.tick_params(axis='both', which='major', labelsize=9)
+
+
+
+plt.title('Correlation Heatmap', fontsize=12)
+
+# define the mask to set the values in the upper triangle to Truemask 
+
+mask=np.triu(np.ones_like(numeric_data.corr(), dtype=bool))
+
+# Generate a custom diverging colormap
+
+#cmap = sns.diverging_palette(220, 10, as_cmap=True)
+
+#ht_mp=sns.heatmap(fraud_train_v8.corr(), cmap=cmap, vmax=.3, center=0,annot=True,
+            #square=True, linewidths=.5, cbar_kws={"shrink": .5})
+            
+            
+heatmap = sns.heatmap(numeric_data.corr(), mask=mask,vmin=-1, vmax=1, annot=True, cmap='BrBG', annot_kws={"size": 4})
+
+
+
+
+
+            
+            
+#heatmap.set_title('Correlation Heatmap', #fontdict={'fontsize':20}, pad=12)
+            
+
+
+
+```
+
+
+
+```{python}
+
+
+
+plt.show()
+
+plt.clf()
+
+
+
+```
+
+
+<br/><br/> <br/><br/>
+
+There is very high to high correlation between Amount of Injury Claim, Amount of Property Claim, Amount of Vehicle Damage, and Amount of Total Claim. This is unsurprising as Amount of Total Claim is the sum of the other three. Amount of Total Claim is the only feature of the four that will be used for our machine learning models.
+
+Other features exhibiting very high correlation are Loyalty period and Age. This makes sense as older customers have the chance to accrue loyalty time based on having lived longer than younger customers. Still, we will retain both features for our models.
+
+<br/><br/>
+
+
+
+Features not important for visualizing or building models will be dropped.
+
+<br/><br/>
+
+```{python}
+
+
+fraud_v8=fraud_v8.drop(['CustomerID', 'IncidentAddress', 'InsuredZipCode', 'InsuredHobbies','Country', 'InsurancePolicyNumber', 'VehicleID'], axis=1)
+
+
+```
+
+
+
+```{python}
+
+
+
+fraud_v8=fraud_v8.dropna()
+
+
+
+```
+
+
+
+<br/><br/>
+
+<br/><br/>
+
+## Visualization
+
+<br/><br/>
+
+<br/><br/>
+
+
+```{python}
+
+
+
+
+
+
+```
+
+
+
+```{python}
+
+
+
+
+
+```
+
+
+
+```{python}
+
+
+
+
+
+
+```
+
+
+
+```{python}
+
+
+
+
+
+
+```
+
+
 
 
 
