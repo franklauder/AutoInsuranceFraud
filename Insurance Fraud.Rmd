@@ -1494,6 +1494,449 @@ fraud_v8=fraud_v8.dropna()
 ```{python}
 
 
+fig = plt.figure(figsize=(10, 7))
+fig.tight_layout(pad=1.30,h_pad=4, w_pad=3)
+fig.suptitle('Numerical Review by Fraud Reported', fontsize=11)
+sns.set_style("dark")
+
+
+
+
+
+plt.subplot(331)
+plt.title('Amount of Total Claim', fontsize=7, y=0.90)
+dt_1=sns.boxplot(data = fraud_v8, x = 'ReportedFraud', y="AmountOfTotalClaim")
+dt_1.tick_params(axis='both', which='major', labelsize=4)
+#dt_1.tick_params(axis='x',labelrotation=90)
+dt_1.set(xlabel=None) 
+dt_1.set(ylabel=None) 
+
+
+
+
+
+plt.subplot(332)
+plt.title("Insured Age",fontsize=7, y=0.90)
+dt_2=sns.boxplot(data = fraud_v8, x = 'ReportedFraud', y="InsuredAge")
+dt_2.tick_params(axis='both', which='major', labelsize=6)
+#dt_2.tick_params(axis='x',labelrotation=90)
+dt_2.set(xlabel=None) 
+dt_2.set(ylabel=None) 
+
+
+plt.subplot(333)
+plt.title("Capital Gains",fontsize=7, y=0.90)
+dt_3=sns.boxplot(data = fraud_v8, x = 'ReportedFraud', y="CapitalGains")
+dt_3.tick_params(axis='both', which='major', labelsize=6)
+#dt_3.tick_params(axis='x',labelrotation=90)
+dt_3.set(xlabel=None) 
+dt_3.set(ylabel=None) 
+
+plt.subplot(334)
+plt.title("Capital Loss",fontsize=7, y=0.80)
+dt_4=sns.boxplot(data = fraud_v8, x = 'ReportedFraud', y="CapitalLoss")
+dt_4.tick_params(axis='both', which='major', labelsize=6)
+#dt_4.tick_params(axis='x',labelrotation=45)
+dt_4.set(xlabel=None) 
+dt_4.set(ylabel=None) 
+
+plt.subplot(335)
+plt.title("Customer Loyalty Period",fontsize=7, y=0.90)
+dt_5=sns.boxplot(data = fraud_v8, x = 'ReportedFraud', y="CustomerLoyaltyPeriod")
+dt_5.tick_params(axis='both', which='major', labelsize=6)
+#dt_5.tick_params(axis='x',labelrotation=90)
+dt_5.set(xlabel=None) 
+dt_5.set(ylabel=None) 
+
+plt.subplot(336)
+plt.title("Policy Deductible",fontsize=7, y=0.90)
+dt_6=sns.boxplot(data = fraud_v8, x = 'ReportedFraud', y="Policy_Deductible")
+dt_6.tick_params(axis='both', which='major', labelsize=6)
+#dt_6.tick_params(axis='x',labelrotation=90)
+dt_6.set(xlabel=None) 
+dt_6.set(ylabel=None) 
+
+plt.subplot(337)
+plt.title("Policy Annual Premium",fontsize=7, y=0.90)
+dt_7=sns.boxplot(data = fraud_v8, x = 'ReportedFraud', y="PolicyAnnualPremium")
+dt_7.tick_params(axis='both', which='major', labelsize=6)
+#dt_7.tick_params(axis='x',labelrotation=90)
+dt_7.set(xlabel=None) 
+dt_7.set(ylabel=None) 
+
+plt.subplot(338)
+plt.title("Umbrella Limit",fontsize=7, y=0.90)
+dt_8=sns.boxplot(data = fraud_v8, x = 'ReportedFraud', y="UmbrellaLimit")
+dt_8.tick_params(axis='both', which='major', labelsize=6)
+#dt_8.tick_params(axis='x',labelrotation=90)
+dt_8.set(xlabel=None) 
+dt_8.set(ylabel=None) 
+
+
+
+
+plt.subplots_adjust(wspace=01.0, hspace=2.0)
+
+
+txt="Figure 3. Values collected by user4545 are plotted."
+plt.figtext(0.5, -0.21, txt, wrap=True, horizontalalignment='center', fontsize=5);
+
+
+
+```
+
+
+
+```{python}
+
+plt.show()
+plt.clf()
+
+
+
+
+
+
+
+```
+
+
+<br/><br/> <br/><br/>
+
+Based on the subplots from *Figure 11*, we observe that certain numeric features have outliers. We'll take a closer look at those features.
+
+<br/><br/>
+
+
+
+
+```{python}
+
+
+fig = plt.figure(figsize=(11, 6))
+fig.suptitle('Amount of Total Claim', fontsize=11)
+#sns.set(xlabel=None)
+#sns.set(font_scale=0.5)
+sns.set_style("dark")
+
+
+
+
+
+
+plt.subplot(131)
+plt.title('Box Plot-Type of Incident and Reported Fraud', fontsize=7)
+ac_1=sns.boxplot(data = fraud_v8, x = "AmountOfTotalClaim", y='ReportedFraud')
+ac_1.tick_params(axis='x', which='major', labelsize=5)
+ac_1.tick_params(axis='y', labelsize=5)
+ac_1.tick_params(axis='x', labelrotation=60)
+ac_1.set(xlabel=None) 
+
+
+
+plt.subplot(132)
+plt.title('Histogram-Amount of Total Claim', fontsize=7)
+ac_2=sns.histplot(data=fraud_v8, x="AmountOfTotalClaim")
+ac_2.tick_params(axis='x', which='major', labelsize=5)
+ac_2.tick_params(labelrotation=60)
+ac_2.tick_params(axis='y', labelsize=5)
+ac_2.set(xlabel=None) 
+
+
+
+plt.subplot(133)
+plt.title('Histogram-Amount of Total Claim and Reported Fraud', fontsize=7)
+ac_3=sns.histplot(data=fraud_v8, x="AmountOfTotalClaim", hue="ReportedFraud")
+ac_3.tick_params(axis='x', which='major', labelsize=5)
+ac_3.tick_params(axis='y', labelsize=5)
+#ac_3.tick_params(labelrotation=60)
+ac_3.set(xlabel=None) 
+
+
+
+plt.subplots_adjust(wspace=0.45)
+
+
+
+
+```
+
+The box plots from *Figure 13* displaying Amount of Total Claim for the different events of ReportedFraud are interesting. For Reported Fraud=Y there are many outliers which are below 22000. Data points falling under 22000 for ReportedFraud='N" is not considered outliers.
+
+We'll further check outliers by viewing the histograms from *Figure 13*. Jumping out is the distribution of AmountOfTotalClaim has two distinct peaks. That is, it is "bimodal". The peaks in any distribution are the most common number(s). The distribution of Total Claim Reported is due to multiple values occurring most frequently. Data values that occur the most often in a data set is the mode.
+
+The second histogram from *Figure 13* superimposes the two events. The superimposed histogram follows the same bi-modal distribution as the single histogram. The outliers are of no concern and will not be removed from the data set.
+
+
+
+
+```{python}
+
+
+fig = plt.figure(figsize=(11, 6))
+fig.suptitle('Insured Age Review', fontsize=11)
+#sns.set(xlabel=None)
+#sns.set(font_scale=0.5)
+sns.set_style("dark")
+
+
+plt.subplot(131)
+plt.title('Box Plot-Insured Age and Reported Fraud', fontsize=7)
+ia_1=sns.boxplot(data = fraud_v8, x = "InsuredAge", y='ReportedFraud')
+ia_1.tick_params(axis='x', which='major', labelsize=5)
+ia_1.tick_params(axis='y', labelsize=5)
+ia_1.tick_params(axis='x', labelrotation=60)
+ia_1.set(xlabel=None) 
+
+
+
+plt.subplot(132)
+plt.title('Histogram- Insured Age', fontsize=7)
+ia_2=sns.histplot(data=fraud_v8, x="InsuredAge")
+ia_2.tick_params(axis='x', which='major', labelsize=5)
+ia_2.tick_params(labelrotation=60)
+ia_2.tick_params(axis='y', labelsize=5)
+ia_2.set(xlabel=None) 
+
+
+
+plt.subplot(133)
+plt.title('Histogram-Insured Age and Reported Fraud', fontsize=7)
+ia_3=sns.histplot(data=fraud_v8, x="InsuredAge",hue="ReportedFraud")
+ia_3.tick_params(axis='x', which='major', labelsize=5)
+ia_3.tick_params(axis='y', labelsize=5)
+#ac_3.tick_params(labelrotation=60)
+ia_3.set(xlabel=None) 
+
+
+
+plt.subplots_adjust(wspace=0.45)
+
+
+
+
+```
+
+
+
+
+```{python}
+
+plt.show()
+
+plt.clf()
+
+
+```
+
+
+
+<br/><br/> <br/><br/>
+
+The box plots from *Figure 4* show outliers above the age of 60 for both reported fraud events. In addition, both histograms from *Figure 14* have slight skews to the right. Looking closer at the subplots, this appears to be due to drivers over the age of 50. Drivers over the age of 50 or 60 seeking auto insurance coverage is not unusual. Since the outliers are not unusual, they will not be removed or transformed.
+
+
+```{python}
+
+
+fraud_v8['InsuredAge'].describe()
+
+
+```
+
+
+
+```{python}
+
+
+
+fig = plt.figure(figsize=(11, 6))
+fig.suptitle('Policy Annual Premium  Review', fontsize=12)
+#sns.set(xlabel=None)
+#sns.set(font_scale=0.5)
+sns.set_style("dark")
+
+
+plt.subplot(131)
+plt.title('Box Plot-Policy Annual Premium and Reported Fraud', fontsize=7)
+pa_1=sns.boxplot(data = fraud_v8, x = "PolicyAnnualPremium", y='ReportedFraud')
+pa_1.tick_params(axis='x', which='major', labelsize=5)
+pa_1.tick_params(axis='y', labelsize=5)
+pa_1.tick_params(axis='x', labelrotation=60)
+pa_1.set(xlabel=None) 
+
+
+
+plt.subplot(132)
+plt.title('Histogram-Policy Annual Premium', fontsize=7)
+pa_2=sns.histplot(data=fraud_v8,x="PolicyAnnualPremium")
+pa_2.tick_params(axis='x', which='major', labelsize=5)
+pa_2.tick_params(labelrotation=60)
+pa_2.tick_params(axis='y', labelsize=5)
+pa_2.set(xlabel=None) 
+
+
+
+plt.subplot(133)
+plt.title('Histogram-Policy Annual Premium and Reported Fraud', fontsize=7)
+pa_3=sns.histplot(data=fraud_v8,x="PolicyAnnualPremium",hue="ReportedFraud")
+pa_3.tick_params(axis='x', which='major', labelsize=5)
+pa_3.tick_params(axis='y', labelsize=5)
+#ac_3.tick_params(labelrotation=60)
+pa_3.set(xlabel=None) 
+
+
+
+plt.subplots_adjust(wspace=0.45)
+
+
+```
+
+
+
+
+
+
+```{python}
+
+
+plt.show()
+
+plt.clf()
+
+
+
+```
+
+
+<br/><br/>
+
+<br/><br/>
+
+The boxplots from *Figure 15* both have outliers at the lower and higher ends. There are outliers on both higher and lower ends of both box plots. It's difficult to determine from the first histogram if there is a skew (tail). The mean of 1261 is slightly less than the median of 1266 which tells us there's a small skew to the left. There are a few small values of Policy Annual Premium that are driving the mean down. The third plot is of two histograms superimposed based on Reported Fraud event. Reported Fraud=Y skews slight to the left. The mean of 1255 is less than the median of 1271 which supports the left skew. The histogram for Reported Fraud=N appears normally distributed which is when the mean and median are the same. The mean and median for Reported Fraud=N are the same at 1263 thus normal distribution is confirmed.
+
+Based on the statistical analysis, the skew of the first histogram is primarily caused by lower premiums of data points reported as fraud. This data can be important during a model building. We'll at addtional data for determining whether to keep these outliers.
+
+<br/><br/>
+
+
+```{python}
+
+
+print('**** Year Of Make****' )
+
+print(fraud_v8['VehicleYOM'].value_counts().sort_values())
+
+
+
+
+```
+
+
+
+
+```{python}
+
+
+
+
+plt.figure(figsize=(16,6))
+#plt.title("Type of Collision-Changed")
+ax=sns.countplot(data=fraud_v8, x='VehicleYOM')
+#plt.tick_params(label_rotation=45)
+ax.set_title("Vehicle Year of Make", size=25)
+ax.set(xlabel=None)
+ax.set(ylabel=None)
+ax.tick_params(axis='x',labelrotation=60,labelsize =13)
+ax.tick_params(axis='y', labelsize=13)
+sns.set_style("dark")
+
+ax.annotate('Figure ##',
+
+            xy = (1.0, -0.2),
+
+            xycoords='axes fraction',
+
+            ha='right',
+
+            va="center",
+
+            fontsize=10)
+            
+fig.tight_layout()
+
+
+
+
+```
+
+<br/><br/>
+
+```{python echo=FALSE,fig.cap="Figure 16"}
+
+
+plt.figure(figsize=(16,6))
+#plt.title("Type of Collision-Changed")
+ax=sns.countplot(data=fraud_v8, x='VehicleYOM')
+#plt.tick_params(label_rotation=45)
+ax.set_title("Vehicle Year of Make", size=25)
+ax.set(xlabel=None)
+ax.set(ylabel=None)
+ax.tick_params(axis='x',labelrotation=60,labelsize =13)
+ax.tick_params(axis='y', labelsize=13)
+sns.set_style("dark")
+
+ax.annotate('Figure ##',
+
+            xy = (1.0, -0.2),
+
+            xycoords='axes fraction',
+
+            ha='right',
+
+            va="center",
+
+            fontsize=10)
+            
+fig.tight_layout()
+
+
+
+
+```
+
+<br/><br/>
+
+
+
+```{python}
+
+
+
+plt.figure(figsize=(16,6))
+#plt.title("Type of Collision-Changed")
+ax=sns.countplot(data=fraud_v8, x='VehicleYOM')
+#plt.tick_params(label_rotation=45)
+ax.set_title("Vehicle Year of Make", size=25)
+ax.set(xlabel=None)
+ax.set(ylabel=None)
+ax.tick_params(axis='x',labelrotation=60,labelsize =13)
+ax.tick_params(axis='y', labelsize=13)
+sns.set_style("dark")
+
+ax.annotate('Figure ##',
+
+            xy = (1.0, -0.2),
+
+            xycoords='axes fraction',
+
+            ha='right',
+
+            va="center",
+
+            fontsize=10)
+            
+fig.tight_layout()
 
 
 
@@ -1505,16 +1948,9 @@ fraud_v8=fraud_v8.dropna()
 ```{python}
 
 
+plt.show()
 
-
-
-```
-
-
-
-```{python}
-
-
+plt.clf()
 
 
 
@@ -1523,20 +1959,11 @@ fraud_v8=fraud_v8.dropna()
 
 
 
-```{python}
+<br/><br/>
 
+Auto insurance premiums are generally based on personal details like choice of coverage, type of vehicle driven, and age of car. The newer the car, typically the more expensive the insurance. This is based on the vehicle's replacement cost. The year the car was manufactured plays just as big a part in the premium as the make and model itself. *Figure 16* displays all years of vehicle make in our data set. We find that there are just over 6000 auto's that have an age of 15 years or greater compared to the last year of 2015. The number of older vehicles explains the outliers at the lower end of the box plots form *Figure 15*. These outliers are not unusual thus will not be removed or transformed.
 
-
-
-
-
-```
-
-
-
-
-
-
+<br/><br/>
 
 
 
