@@ -2507,10 +2507,806 @@ From *Figure 25* two categories stand out with respect to reported fraud. 'Singl
 
 <br/><br/>
 
+# Data Preprocessing
+
+<br/><br/> 
+
+Before model building can start, we'll need to perform pre-processing. This will entail splitting our data into training, validation, and test sets along with transforming numerical and categorical features into classification friendly formats.
+
+<br/><br/>
+
 
 
 ```{python}
 
+
+
+
+
+from sklearn.model_selection import train_test_split
+
+
+from sklearn.preprocessing import StandardScaler, OrdinalEncoder, LabelEncoder
+
+
+from sklearn.compose import ColumnTransformer, make_column_transformer
+
+from sklearn.pipeline import Pipeline, make_pipeline
+
+from sklearn.model_selection import StratifiedKFold
+
+from sklearn.model_selection import GridSearchCV, RandomizedSearchCV
+
+from sklearn.compose import make_column_selector as selector
+
+from sklearn.preprocessing import OneHotEncoder
+
+
+
+
+```
+
+
+
+
+```{python}
+
+
+
+model_data=fraud_v8.copy()
+
+
+
+```
+
+
+
+```{python}
+
+
+from sklearn import set_config
+
+
+```
+
+
+
+```{python}
+
+
+
+model_data=model_data.drop(['IncidentCity','AmountOfInjuryClaim', 'AmountOfPropertyClaim', 'UmbrellaLimit','AmountOfVehicleDamage', 'VehicleModel',
+'VehicleYOM', 'count', 'InsuredEducationLevel','InsuredOccupation', 'VehicleMake'], axis=1)
+
+
+```
+
+
+
+
+
+```{python}
+
+
+print('The  Target categories: {}:'.format(model_data['ReportedFraud'].cat.categories))
+
+
+
+```
+
+## Splt Dataset
+
+
+<br/><br/>
+
+We will separate the data to get predictor features and target features into separate data frames.
+
+<br/><br/>
+
+
+
+```{python}
+
+
+X=model_data.drop("ReportedFraud", axis=1)
+
+y=model_data["ReportedFraud"]
+
+
+
+```
+
+
+The data type of the target feature is categorical. Most machine learning algorithms require numerical data types. Label Encoder will be used to transform y to a numeric tpye.
+
+<br/><br/>
+
+
+```{python}
+
+label_encoder=LabelEncoder()
+
+
+
+
+
+```
+
+
+
+
+```{python}
+
+
+
+
+Transform y to data frame from series
+
+<br/><br/>
+
+
+```
+
+
+
+```{python}
+
+
+y=pd.DataFrame(y)
+
+
+
+```
+
+
+
+```{python}
+
+
+y["ReportedFraud"]=label_encoder.fit_transform(y["ReportedFraud"])
+
+
+```
+
+
+
+
+```{python}
+
+
+y["ReportedFraud"].dtype
+
+
+
+```
+
+
+
+
+
+```{python}
+
+
+print('Target Feature categories (N,Y) as binary:  {}:'.format(y["ReportedFraud"].cat.categories))
+
+
+
+```
+
+From the two above outputs we can see that the target feature has been converted into binary form though its data type is integer. The data type must be converted back to categorical.
+
+
+```{python}
+
+
+y["ReportedFraud"]=y["ReportedFraud"].astype("category")
+
+
+
+```
+
+
+
+```{python}
+
+
+print('Target Feature categories as binary:  {}:'.format(y["ReportedFraud"].cat.categories))
+
+
+```
+
+
+
+```{python}
+
+
+print('Target Feature as categorical binary:\n \n')
+
+y.info()
+
+
+
+```
+
+
+
+
+```{python}
+
+
+print('Shape of Predictor Features is {}:'.format(X.shape))
+
+
+
+```
+
+
+
+
+```{python}
+
+
+
+print('Shape of Target Feature is {}:'.format(y.shape))
+
+
+```
+
+
+
+
+<br/><br/>
+
+The makup of the X data frame is 28836 rows and 26 columns. The y data frame has the same number of rows, 28836, and one column, the target feature.
+
+<br/><br/>
+
+
+
+
+```{python}
+
+
+
+print("*********** X Structure***********")
+
+X.info()
+
+
+```
+
+We will now split X,y into Train, Validation and Test sets
+
+<br/><br/>
+
+```{python}
+
+
+
+
+X_train, X_rem, y_train, y_rem=train_test_split(X,y, train_size=0.70)
+
+
+```
+
+
+
+```{python}
+
+
+
+X_valid, X_test, y_valid, y_test=train_test_split(X_rem, y_rem, test_size=0.5)
+
+
+
+```
+
+
+
+
+
+```{python}
+
+
+
+print('Shape of X Train {}:'.format(X_train.shape))
+
+print('Shape of X Valid {}:'.format(X_valid.shape))
+
+print('Shape of X Test {}:'.format(X_test.shape))
+
+print('Shape of y Train {}:'.format(y_train.shape))
+
+print('Shape of y Valid {}:'.format(y_valid.shape))
+
+print('Shape of y Test {}:'.format(y_test.shape))
+
+
+
+
+```
+
+
+
+```{python}
+
+
+
+y_train_np=np.array(y_train)
+
+y_valid_np=np.array(y_valid)
+
+y_test_np=np.array(y_test)
+
+
+
+
+```
+
+
+<br/><br/>
+
+y features will be transformed to numpy array
+
+<br/><br/>
+
+```{python}
+
+
+
+
+
+print('Shape of y Train rv {}:'.format(y_train_np.shape))
+print('Shape of y Valid rv {}:'.format(y_valid_np.shape))
+
+print('Shape of y Test rv {}:'.format(y_test_np.shape))
+
+
+```
+
+
+
+
+
+```{python}
+
+
+<br/><br/>
+
+Next we will transform y features to one dimensional arrays
+
+<br/><br/>
+
+
+
+
+```
+
+
+
+
+
+```{python}
+
+
+
+y_train_rv=np.ravel(y_train_np)
+
+y_valid_rv=np.ravel(y_valid_np)
+
+y_test_rv=np.ravel(y_test_np)
+
+
+
+```
+
+
+
+
+
+```{python}
+
+
+print('Shape of y Train rv {}:'.format(y_train_rv.shape))
+print('Shape of y Valid rv {}:'.format(y_valid_rv.shape))
+
+print('Shape of y Test rv {}:'.format(y_test_rv.shape))
+
+
+
+```
+
+
+<br/><br/>
+
+From the above output we see that y train, y valid, and y test have been transformed into one dimensional numpy arrays.
+
+<br/><br/>
+
+<br/><br/>
+
+## Transform Categorical and Numerical features
+
+<br/><br/>
+
+Our next step is to transform the predictor features into acceptable machine learning formats.
+
+Transformation for numerical features is performed by scaling. Scaling prevents a feature with a range let's say in the thousands from being considered more important than a feature having a lower range. Scaling places features at the same importance before being applied to a machine learning algorithm. There are different methods used in scaling features, for this analysis we'll be using standard scaling. Standard scaling transforms the data to have zero mean and a variance of one, thus making the data unitless.
+
+Most machine learning algorithms only accept numerical features which makes categorical features unacceptable in their original form. Thus, we need to encode categorical features into numerical values. The act of replacing categories with numbers is called categorical encoding. For this we will use one-hot encoding. Categorical features are represented as a group of binary features, where each binary feature represents one category. The binary feature takes the integer value 1 if the category is present, or 0 otherwise.
+
+<br/><br/>
+
+<!--#  set_config  configures pre-proccessing steps such as Standard Scaler and One Hot Encoding  to return a Pandas DataFrame   -->
+
+set_config configures pre-proccesing steps such as Standard Scaler and One Hot Encoding to return a Pandas DataFrame.
+
+<br/><br/>
+
+
+
+
+```{python}
+
+
+
+set_config(transform_output="pandas")
+
+
+
+
+```
+
+
+
+```{python}
+
+
+
+#Define classification columns
+categorical = list(X_train.select_dtypes('category').columns)
+print(f"Categorical columns are: {categorical}")
+
+
+
+```
+
+
+
+
+
+```{python}
+
+
+#Define numeric columns
+numerical = list(X_train.select_dtypes('number').columns)
+print(f"Numerical columns are: {numerical}")
+
+
+
+
+
+
+```
+
+
+
+<br/><br/>
+
+First, we will create transformed train, valid, and test sets for the Logistic Regression model. This entails dropping the first category of each feature during One Hot Encoding.
+
+
+```{python}
+
+
+
+ct_lr=ColumnTransformer(
+  transformers=[
+   ('scale',StandardScaler(), numerical),
+   ('ohe',OneHotEncoder(handle_unknown='ignore', sparse_output=False, drop='first'), categorical)
+]
+)
+
+
+
+```
+
+
+
+
+
+
+
+```{python}
+
+X_train_lr=ct_lr.fit_transform(X_train)
+
+
+
+
+
+
+```
+
+
+
+
+
+```{python}
+
+
+
+print('************First Five Rows X_train_lr************')
+print(X_train_lr.head())
+
+
+
+```
+
+
+
+
+
+```{python}
+
+
+
+X_valid_lr=ct_lr.transform(X_valid)
+
+
+
+```
+
+
+
+
+```{python}
+
+
+
+print('************First Five Rows X_valid_lr************')
+print(X_valid_lr.head())
+
+
+
+
+```
+
+
+
+
+
+```{python}
+
+
+
+
+X_test_lr=ct_lr.transform(X_test)
+
+
+```
+
+
+
+
+```{python}
+
+
+
+print('************First Five Rows X_test_lr************')
+
+
+print(X_test_lr.head())
+
+
+
+```
+
+<br/><br/>
+
+<br/><br/>
+
+We see from the first five rows of the train, valid, and test sets that the features have been transformed while at the same time retaining the column feature names.
+
+
+```{python}
+
+
+
+print('Shape of X Train lr {}:'.format(X_train_lr.shape))
+
+print('Shape of X Valid lr {}:'.format(X_valid_lr.shape))
+
+print('Shape of X Test lr {}:'.format(X_test_lr.shape))
+
+
+
+```
+
+
+
+
+```{python}
+
+
+
+
+Next, we transform training, valid, and test sets for all other models. During OneHotEncoding, the first category will be dropped only if the feature is binary.
+
+<br/><br/>
+
+
+
+
+```
+
+
+
+
+```{python}
+
+
+ct_tr=ColumnTransformer(
+  transformers=[
+   ('num',StandardScaler(), numerical),
+   ('cat',OneHotEncoder(handle_unknown='ignore', sparse_output=False, drop='if_binary'), categorical)
+]
+)
+
+
+
+
+```
+
+
+Transform X_train
+
+<br/><br/>
+
+```{python}
+
+
+X_train_tr=ct_tr.fit_transform(X_train)
+
+
+
+
+
+```
+
+
+
+
+```{python}
+
+
+
+print('************First Five Rows X_train_tr************')
+
+
+print(X_train_tr.head())
+
+
+
+
+```
+
+
+
+
+
+```{python}
+
+
+
+X_valid_tr=ct_tr.transform(X_valid)
+
+
+
+
+```
+
+
+
+
+
+```{python}
+
+
+
+
+
+print('************First Five Rows X_valid_tr************')
+
+print(X_valid_tr.head())
+
+
+
+```
+
+
+
+
+
+```{python}
+
+
+
+X_test_tr=ct_tr.transform(X_test)
+
+
+
+
+```
+
+
+
+
+
+
+```{python}
+
+
+
+
+
+print('************First Five Rows X_test_tr************')
+
+print(X_test_tr.head())
+
+
+
+```
+
+
+
+
+```{python}
+
+
+
+
+print('Shape of X Train tr {}:'.format(X_train_tr.shape))
+
+print('Shape of X Valid tr {}:'.format(X_valid_tr.shape))
+
+print('Shape of X Test tr {}:'.format(X_test_tr.shape))
+
+
+
+
+```
+
+
+<br/><br/>
+
+From the shape output we find there are 13 additional columns compared to the logistic regression transformed data.
+
+<br/><br/>
+
+
+
+```{python}
+
+
+
+from sklearn.metrics import confusion_matrix, classification_report, ConfusionMatrixDisplay, accuracy_score, roc_auc_score, recall_score, RocCurveDisplay, precision_score, f1_score
+
+
+
+
+```
+
+
+
+
+
+```{python}
+
+
+from sklearn import metrics
+
+from sklearn.inspection import permutation_importance
 
 
 
@@ -2520,6 +3316,9 @@ From *Figure 25* two categories stand out with respect to reported fraud. 'Singl
 
 
 ```
+
+
+
 
 
 
