@@ -3320,6 +3320,1911 @@ from sklearn.inspection import permutation_importance
 
 
 
+# Models
+
+br/><br/>
+
+For the purpose of evaluating model performance, the event of interest we are interested in is if reported fraud is yes. This is considered the positive class. Classification metrics are used to determine how well our models predict the event of interest.
+
+## Metrics Definitions
+
+
+Accuracy-measures the number of predictions that are correct as a percentage of the total number of predictions that are made. As an example, if 90% of your predictions are correct, your accuracy is simply 90%. Calculation: number of correct predictions/Number of total predictions. TP+TN/(TP+TN+FP+FN)
+
+Precision-tells us about the quality of positive predictions. It may not find all the positives but the ones that the model does classify as positive are very likely to be correct. As an example, out of everyone predicted to have defaulted, how many of them actually did default? So within everything that has been predicted as a positive, precision counts the percentage that is correct. Calculation: True positives/All Positives. TP/(TP+FP)
+
+
+
+Recall- tells us about how well the model identifies true positives. The model may find a lot of positives yet it also will wrongly detects many positives that are not actually positives. Out of all the patients who have the disease, how many were correctly identified? So within everything that actually is positive, how many did the model successfully to find. A model with low recall is not able to find all (or a large part) of the positive cases in the data. Calculated as: True Positives/(False Negatives + True Positives)
+
+
+
+F1 Score-The F1 score is defined as the harmonic mean of precision and recall.
+
+The harmonic mean is an alternative metric for the more common arithmetic mean. It is often useful when computing an average rate. <https://en.wikipedia.org/wiki/Harmonic_mean>
+
+The formula for the F1 score is the following: 2 times((precision\*Recall)/(Precision + Recall))
+
+Since the F1 score is an average of Precision and Recall, it means that the F1 score gives equal weight to Precision and Recall:
+
+<br/><br/> 
+
+<br/><br/>
+
+
+
+# Model Training and Validation
+
+
+
+
+```{python}
+
+
+
+from sklearn.linear_model import LogisticRegression
+
+
+```
+
+
+
+
+
+```{python}
+
+logreg=LogisticRegression()
+
+
+
+```
+
+
+
+
+```{python}
+
+
+
+lr_params={
+'C': [0.001, 0.01, 0.1, 1, 10], 
+'penalty': ['l2'],
+'max_iter': list(range(10000,15000, 20000)),
+'solver': ['newton-cg', 'lbfgs', 'liblinear', 'sag', 'saga']
+
+}
+
+
+```
+
+
+
+```{python}
+
+
+
+
+lr_search=RandomizedSearchCV(logreg, lr_params, refit=True, 
+verbose=3,cv=5,n_iter=2, scoring='roc_auc',return_train_score=True, n_jobs=-1)
+
+
+
+```
+
+
+
+
+```{python}
+
+
+
+lr_search.fit(X_train_lr, y_train_rv)
+
+
+
+```
+
+
+
+
+```{python}
+
+
+
+lr_clf=lr_search.best_estimator_
+
+
+
+
+```
+
+
+
+
+```{python}
+
+
+lr_clf
+
+
+
+
+```
+
+
+<br/><br/>
+
+The above displays gives us the parameters chosen for the logistic regression  model. 
+
+<br/><br/>
+
+
+
+```{python}
+
+
+
+
+y_pred_valid_lr=lr_clf.predict(X_valid_lr)
+
+
+```
+
+
+
+###  Validation Metrics
+
+
+```{python}
+
+
+
+
+print('****Logistic RegressionValidation Classification Report****')
+
+
+print(classification_report(y_valid_rv, y_pred_valid_lr
+))
+
+
+
+
+```
+
+
+
+
+```{python}
+
+
+
+
+
+log_precision=precision_score(y_valid_rv, y_pred_valid_lr).round(2)
+
+
+```
+
+
+
+
+```{python}
+
+
+
+
+log_recall=recall_score(y_valid_rv, y_pred_valid_lr).round(2)
+
+
+
+
+```
+
+
+
+
+
+
+```{python}
+
+
+
+log_f1=f1_score(y_valid_rv, y_pred_valid_lr).round(2)
+
+
+
+
+
+```
+
+
+
+
+
+
+
+```{python}
+
+
+
+log_accuracy=accuracy_score(y_valid_rv, y_pred_valid_lr).round(2)
+
+
+
+
+```
+
+
+
+
+```{python}
+
+
+
+cm_lr_vl = metrics.confusion_matrix(y_valid_rv, y_pred_valid_lr, labels=[0,1])
+df_cm_lr_vl = pd.DataFrame(cm_lr_vl, index=["Actual - No", "Actual - Yes"], columns=["Predicted - No", "Predicted - Yes"])
+group_counts = ["{0:0.0f}".format(value) for value in cm_lr_vl.flatten()]
+group_percentages = ["{0:.2%}".format(value) for value in cm_lr_vl.flatten()/np.sum(cm_lr_vl)]
+labels = [f"{v1}\n{v2}" for v1, v2 in zip(group_counts, group_percentages)]
+labels = np.asarray(labels).reshape(2,2)
+
+plt.figure(figsize=(9,6))
+sns.heatmap(df_cm_lr_vl, annot=labels, fmt='')
+plt.ylabel('True label')
+plt.xlabel('Predicted label')
+
+plt.title("Confusion Matrix-Logistic Regression", fontsize=14)
+
+
+
+```
+
+
+
+
+
+```{python}
+
+
+
+
+
+
+
+```
+
+
+### Feature Importance
+
+We will now look at Feature Importance. Feature Importance is a score assigned to the features of a Machine Learning model that defines how "important" is a feature to the model's prediction.
+
+```{python}
+
+
+
+feature_importance_lr=pd.DataFrame({'feature':list(X_valid_lr.columns),'feature_importance':[abs(i) for i in lr_clf.coef_[0]]})
+
+
+feature_importance_lr=feature_importance_lr.sort_values('feature_importance',ascending=False)
+
+
+
+
+```
+
+
+
+For the logistcal regression model we took the absolute value of the coefficients so as to get the Importance of the feature both with negative and positive effect.
+
+<br/><br/>
+
+Now that we have the importance of the features we will now transform the coefficients for easier interpretation. The coefficients are in log odds format. We will transform them to odds-ratio format.
+
+<br/><br/>
+
+Combine feature names and coefficients on top Pandas DataFrame
+
+
+
+```{python}
+
+
+
+
+feature_names_lr=pd.DataFrame(X_valid_lr.columns, columns=['Feature'])
+
+log_coef=pd.DataFrame(np.transpose(lr_clf.coef_), columns=['Coefficent'])
+
+coefficients=pd.concat([feature_names_lr, log_coef], axis=1)
+
+
+
+```
+
+
+<br/><br/> Calculate exponent of the logistic regression coefficients
+
+
+```{python}
+
+
+
+coefficients['Exp_Coefficient']=np.exp(coefficients['Coefficent'])
+
+
+
+
+
+```
+
+
+<br/><br/>
+
+Remove coefficients that are equal to zero.
+
+<br/><br/>
+
+```{python}
+
+
+
+
+coefficients=coefficients[coefficients['Exp_Coefficient']>=1]
+
+
+```
+
+
+
+```{python}
+
+
+
+print('******************Top Five Coefficients******************')
+
+print(coefficients_tp5[['Feature', 'Exp_Coefficient']])
+
+
+
+
+```
+
+
+## Support Vector Machine
+
+
+
+<br/><br/>
+
+Support Vector Machine (the "road machine") is responsible for finding
+the decision boundary to separate different classes and maximize the
+margin. A decision boundary differentiates two classes. A data point falling on either side of the decision boundary can be attributed to different classes.  Binary classes would be either yes or no. 
+
+<br/><br/>
+
+```{python}
+
+
+
+from sklearn.svm import SVC
+
+
+
+
+
+```
+
+
+
+
+```{python}
+
+
+param_grid_svc = {'C': [.01,1, 10, 100], 'gamma': [1,0.1,0.01,0.001]}
+
+
+
+
+
+```
+
+
+
+
+
+```{python}
+
+
+
+svc_ln=SVC(random_state=0, probability=True)
+
+
+
+```
+
+
+
+
+```{python}
+
+
+
+svc_ln=SVC(random_state=0)
+
+
+
+
+```
+
+
+
+
+```{python}
+
+
+
+grid_svc=RandomizedSearchCV(svc_ln,param_grid_svc, refit=True, 
+verbose=3,cv=5,n_iter=2, scoring='roc_auc',return_train_score=True, n_jobs=-1)
+
+
+
+
+
+```
+
+
+
+
+
+```{python}
+
+
+
+grid_svc.fit(X_train_tr, y_train_rv)
+
+
+
+
+```
+
+
+
+
+```{python}
+
+
+svc_clf=grid_svc.best_estimator_
+
+
+
+
+```
+
+
+
+
+
+```{python}
+
+
+
+svc_clf
+
+
+
+
+
+```
+
+<br/><br/>
+
+The above displays gives us the parameters chosen for the support vector machine Model. 
+
+<br/><br/>
+
+
+### Validation Metrics
+
+```{python}
+
+
+y_pred_valid_svc=svc_clf.predict(X_valid_tr)
+
+
+
+
+
+```
+
+
+
+
+
+
+
+```{python}
+
+
+
+
+print('**********SVC Validation Classification Report**********')
+
+print(classification_report(y_valid_rv, y_pred_valid_svc))
+
+
+
+```
+
+
+
+
+
+
+
+```{python}
+
+
+svc_recall=recall_score(y_valid_rv, y_pred_valid_svc).round(2)
+
+
+
+
+
+```
+
+
+
+
+
+
+
+```{python}
+
+
+
+
+svc_precision=precision_score(y_valid_rv, y_pred_valid_svc).round(2)
+
+
+
+
+```
+
+
+
+
+
+```{python}
+
+
+
+svc_f1=f1_score(y_valid_rv, y_pred_valid_svc).round(2)
+
+
+
+
+```
+
+
+
+
+
+```{python}
+
+
+
+
+svc_accuracy=accuracy_score(y_valid_rv, y_pred_valid_svc).round(2)
+
+
+
+
+
+```
+
+
+
+## Decision Tree
+
+
+
+
+Decision trees use a flowchart like a tree structure to show the
+predictions that result from a series of feature splits. To
+accomplish this, a decision tree is made up of three types of nodes:
+
+-   Root Node (parent node): The node that starts the graph. It
+    evaluates the variable that best splits the data.
+
+-   Intermediate Nodes (child nodes): These are nodes where features are
+    evaluated for further splits of the data but are not the final
+    nodes.
+
+-   Leaf nodes (terminal nodes): These are the final nodes of the tree,
+    where the prediction of a categorical event are made.
+
+For a more detailed explanation of decision trees check the link below.
+
+[Guide to Decision
+Trees](https://www.analyticsvidhya.com/blog/2021/08/decision-tree-algorithm/)
+
+
+
+```{python}
+
+
+
+
+from sklearn.tree import DecisionTreeClassifier, plot_tree
+
+from sklearn import tree
+
+
+
+```
+
+
+
+### Training
+
+<br/><br/>
+
+Parameter Definitions:
+
+min_samples_split - Defines the minimum number of samples (or observations) which are required in a node to be considered for splitting.
+
+min_samples_leaf - The minimum number of samples required to be at a leaf node. A split point at any depth will only be considered if it leaves at least min_samples_leaf training samples in each of the left and right branches.Defines the minimum samples (or observations) required in a terminal node or leaf.
+
+max_depth - Determines the length of the tree which is the same as the number of splitting rounds. T
+
+max_features - The number of features to consider when looking for the best split
+
+
+
+```{python}
+
+
+
+
+tree_params={
+  'max_features':[0.25, 0.50,0.75,1.0],
+  'min_samples_split':[2,4,6,10,12],
+  'max_depth':[250, 500, 750,1000],
+  'min_samples_leaf':[3,4,5,7]}
+
+
+
+
+```
+
+
+
+
+
+
+
+```{python}
+
+
+
+
+dt=DecisionTreeClassifier()
+
+
+
+
+```
+
+
+
+
+
+```{python}
+
+
+
+
+dt_grid=GridSearchCV(estimator=dt,param_grid=tree_params, scoring='roc_auc', cv=5, verbose=3, refit=True, return_train_score=True, n_jobs=-1)
+
+
+
+```
+
+
+
+
+
+
+```{python}
+
+
+dt_grid.fit(X_train_tr, y_train_rv)
+
+
+
+
+
+
+```
+
+
+
+
+
+
+
+```{python}
+
+
+
+
+dt_clf=dt_grid.best_estimator_
+
+
+
+
+```
+
+
+
+
+
+```{python}
+
+
+
+dt_clf
+
+
+
+```
+
+<br/><br/>
+
+The above displays gives us the parameters chosen for the Decision Tree Model. 
+
+
+<br/><br/>
+
+
+
+
+
+```{python}
+
+
+
+
+y_pred_valid_dt = dt_clf.predict(X_valid_tr)
+
+
+
+```
+
+
+
+
+### Validation Metrics
+
+
+```{python}
+
+
+
+print('****Decision Tree Classification Report****')
+
+
+print(classification_report(y_valid_rv, y_pred_valid_dt))
+
+
+
+
+```
+
+
+
+
+```{python}
+
+
+
+dt_recall=recall_score(y_valid_rv, y_pred_valid_dt).round(2)
+
+
+
+
+
+```
+
+
+
+
+
+
+```{python}
+
+
+
+
+dt_precision=precision_score(y_valid_rv, y_pred_valid_dt).round(2)
+
+
+
+
+
+
+```
+
+
+```{python}
+
+
+dt_f1=f1_score(y_valid_rv, y_pred_valid_dt).round(2)
+
+
+
+
+```
+
+
+
+```{python}
+
+
+
+dt_accuracy=accuracy_score(y_valid_rv, y_pred_valid_dt).round(2)
+
+
+
+
+```
+
+
+
+
+```{python}
+
+
+tree_auc_valid=roc_auc_score(y_valid_rv,dt_clf.predict_proba(X_valid_tr)[:,1]).round(2)
+
+
+
+```
+
+
+
+
+```{python}
+
+
+
+print("Decision Tree Area Under the Curve: (%.2f)" % tree_auc_valid)
+
+
+
+```
+
+
+
+```{python}
+
+
+
+cm_dt_vl = metrics.confusion_matrix(y_valid_rv, y_pred_valid_dt, labels=[0,1])
+df_cm_dt_vl = pd.DataFrame(cm_dt_vl, index=["Actual - No", "Actual - Yes"], columns=["Predicted - No", "Predicted - Yes"])
+group_counts = ["{0:0.0f}".format(value) for value in cm_dt_vl.flatten()]
+group_percentages = ["{0:.2%}".format(value) for value in cm_dt_vl.flatten()/np.sum(cm_dt_vl)]
+labels = [f"{v1}\n{v2}" for v1, v2 in zip(group_counts, group_percentages)]
+labels = np.asarray(labels).reshape(2,2)
+
+plt.figure(figsize=(9,9))
+sns.heatmap(df_cm_dt_vl, annot=labels, fmt='')
+plt.ylabel('True label')
+plt.xlabel('Predicted label')
+
+plt.title("Confusion Matrix-Decision Tree", fontsize=14)
+
+
+
+```
+
+
+
+```{python}
+
+
+
+
+
+
+
+```
+
+
+
+
+### eature Importance
+
+```{python}
+
+
+
+# let's create a dictionary of features and their importance values
+feat_dict= {}
+for col, val in sorted(zip(X_train_tr.columns, dt_clf.feature_importances_),key=lambda x:x[1],reverse=True):
+  feat_dict[col]=val
+
+
+
+```
+
+
+
+
+```{python}
+
+
+
+feat_dt_df = pd.DataFrame({'Feature':feat_dict.keys(),'Importance':feat_dict.values()})
+
+
+
+```
+
+
+
+
+```{python}
+
+
+
+
+feat_dt_tp5=feat_dt_df.nlargest(5,"Importance")
+
+
+
+
+```
+
+
+
+
+```{python}
+
+
+
+values = feat_dt_tp5.Importance    
+idx = feat_dt_tp5.Feature
+plt.figure(figsize=(12,10))
+clrs = ['green' if (x < max(values)) else 'red' for x in values ]
+sns.barplot(y=idx,x=values,palette=clrs).set(title='Important features Decision Tree Model')
+
+plt.ylabel("Features", fontsize=9)
+
+plt.tick_params(axis='x', which='major', labelsize=8)
+
+plt.tick_params(axis='y', which='major', labelsize=7,labelrotation=45)
+
+
+
+
+```
+
+
+
+
+
+
+```{python}
+
+
+
+
+
+
+
+
+
+```
+
+
+## Random Forest
+l
+
+<br/><br/>
+
+Random forest is an ensemble learning method. Ensemble learning takes predictions from multiple models are merges them  to enhance the accuracy  of prediction.  There are four types of ensemble techniques.  We'll be using Bagging (which random forest is an example of) and boosting,  which our next four models will be an example of.  
+
+
+Bagging involves fitting many decision trees on different samples of the same dataset and averaging the predictions.
+
+
+
+
+Random Forest models are made up of individual decision trees whose
+predictions are combined for a final result. The final result is decided
+using majority rules which means that the final prediction is what the
+majority of the decision tree models chose. Random Forests can be made
+up of thousands of decision trees.
+
+Simply put, the random forest builds multiple decision trees and merges
+them together to get a more accurate prediction.
+
+[Random Forest for
+Beginners](https://www.analyticsvidhya.com/blog/2021/10/an-introduction-to-random-forest-algorithm-for-beginners/)
+
+<br/><br/>
+
+
+```{python}
+
+
+
+
+from sklearn.ensemble import RandomForestClassifier
+
+
+
+
+```
+
+
+<br/><br/>
+
+The individual models of random forest are decision trees. The decision trees predictions are combined for reaching a result. Majority rules is the process by which the Random Forest Classifier determines the result. An example would be 5 models in which 3 of the 5 models predict 'yes' for the classification problem.
+
+<br/><br/>
+
+### Training
+
+
+```{python}
+
+
+
+<br/><br/>
+
+
+
+Parameter Definitions (Not previously defined):
+
+n_estimators - the number of trees to construct
+
+<br/><br/>
+
+
+
+```
+
+
+
+
+
+```{python}
+
+
+
+rf_params={'n_estimators':[500,1000,22500,5000],          
+'max_features':[0.25,0.50,0.75,1.0],
+'min_samples_split':[2,4,6,8], 
+'max_depth': [500, 1000, 2000, 4000], 
+'min_samples_leaf': [3, 4, 5, 6] }
+
+
+
+
+```
+
+
+
+
+```{python}
+
+
+
+rf=RandomForestClassifier(n_jobs=-1)
+
+
+
+
+```
+
+
+
+
+
+
+```{python}
+
+
+
+
+rf_search=RandomizedSearchCV(rf, rf_params, n_iter=2,refit=True, 
+verbose=3,cv=5, scoring='roc_auc',return_train_score=True, n_jobs=-1)
+
+
+
+```
+
+
+
+
+
+
+```{python}
+
+
+
+rf_search.fit(X_train_tr, y_train_rv)
+
+
+
+
+
+
+```
+
+
+
+
+
+
+```{python}
+
+
+
+rf_clf=rf_search.best_estimator_
+
+
+
+```
+
+
+
+
+
+```{python}
+
+
+
+
+rf_clf
+
+
+
+
+```
+
+
+
+
+<br/><br/>
+
+The above display presents the parameters chosen for the random Forest classifier. 
+
+
+
+<br/><br/>
+
+```{python}
+
+
+rf_search.best_params_
+
+
+
+
+```
+
+
+
+
+```{python}
+
+
+y_pred_valid_rf=rf_clf.predict(X_valid_tr)
+
+
+
+
+```
+
+
+
+
+### Validation Metrics
+
+
+
+```{python}
+
+
+
+print('****Random Forest Validation Classification Report****')
+
+print(classification_report(y_valid_rv, y_pred_valid_rf))
+
+
+
+```
+
+
+
+
+
+
+```{python}
+
+
+
+rf_recall=recall_score(y_valid_rv, y_pred_valid_rf).round(2)
+
+
+
+
+```
+
+
+
+
+
+
+```{python}
+
+
+
+
+rf_precision=precision_score(y_valid_rv, y_pred_valid_rf).round(2)
+
+
+
+```
+
+
+
+
+
+```{python}
+
+
+
+rf_f1=f1_score(y_valid_rv, y_pred_valid_rf).round(2)
+
+
+
+```
+
+
+
+
+
+```{python}
+
+
+
+rf_accuracy=accuracy_score(y_valid_rv, y_pred_valid_rf).round(2)
+
+
+
+
+```
+
+
+
+
+
+
+```{python}
+
+
+
+
+valid_rf_auc_score=roc_auc_score(y_valid_rv,rf_clf.predict_proba(X_valid_tr)[:,1]).round(2)
+
+
+
+
+```
+
+
+
+
+```{python}
+
+
+
+valid_rf_auc_score
+
+
+
+
+```
+
+
+
+
+
+```{python}
+
+
+
+cm_rf_vl = metrics.confusion_matrix(y_valid_rv, y_pred_valid_rf, labels=[0,1])
+df_cm_rf_vl = pd.DataFrame(cm_rf_vl, index=["Actual - No", "Actual - Yes"], columns=["Predicted - No", "Predicted - Yes"])
+group_counts = ["{0:0.0f}".format(value) for value in cm_rf_vl.flatten()]
+group_percentages = ["{0:.2%}".format(value) for value in cm_rf_vl.flatten()/np.sum(cm_rf_vl)]
+labels = [f"{v1}\n{v2}" for v1, v2 in zip(group_counts, group_percentages)]
+labels = np.asarray(labels).reshape(2,2)
+
+plt.figure(figsize=(9,9))
+sns.heatmap(df_cm_rf_vl, annot=labels, fmt='')
+plt.ylabel('True label')
+plt.xlabel('Predicted label')
+
+plt.title("Confusion Matrix-Random Forest", fontsize=14)
+
+
+
+
+
+
+```
+
+
+
+
+
+
+
+```{python}
+
+
+
+
+
+
+
+
+
+
+```
+
+
+
+### Feature Importance
+
+
+```{python}
+
+
+
+
+# let's create a dictionary of features and their importance values
+feat_dict_rf= {}
+for col, val in sorted(zip(X_train_tr.columns, rf_clf.feature_importances_),key=lambda x:x[1],reverse=True):
+  feat_dict_rf[col]=val
+
+
+
+
+
+```
+
+
+
+
+
+
+```{python}
+
+
+
+feat_rf_df = pd.DataFrame({'Feature':feat_dict_rf.keys(),'Importance':feat_dict_rf.values()})
+
+
+
+
+```
+
+
+
+
+```{python}
+
+
+feat_rf_tp5=feat_rf_df.nlargest(5,"Importance")
+
+
+
+
+```
+
+
+
+
+
+```{python}
+
+
+
+
+values = feat_rf_tp5.Importance    
+idx = feat_rf_tp5.Feature
+plt.figure(figsize=(12,10))
+clrs = ['green' if (x < max(values)) else 'red' for x in values ]
+sns.barplot(y=idx,x=values,palette=clrs).set(title='Important features Random Forest Model')
+
+plt.ylabel("Features", fontsize=510)
+
+plt.tick_params(axis='x', which='major', labelsize=9)
+
+plt.tick_params(axis='y', labelsize=8,labelrotation=45)
+
+
+
+
+```
+
+
+
+
+```{python}
+
+
+
+
+
+
+
+```
+
+
+
+##  AdaBoost
+
+<br/><br/>
+
+Boosting learns from the mistakes of individual trees. Each new tree is built from the previous tree. We'll be using five boosting algorithms, the first being AdaBoost.
+
+In AdaBooost, a new tree adjusts based on the previous tree by adjusting its weights based on errors from that previous tree. Observations have an assigned weight, and each tree is built in an additive manner, assigning greater weights (more importance) to misclassified observations in the previous learners. Misclassified would be predicted yes but actual is no. False Errors from previous trees are weak learners. Weak learners perform no better tha
+
+```{python}
+
+
+
+from sklearn.ensemble import AdaBoostClassifier
+
+
+
+
+```
+
+
+
+
+
+```{python}
+
+
+
+adb=AdaBoostClassifier(random_state=1)
+
+
+
+```
+
+
+
+
+### Training
+
+Parameter Definitions (Not previously defined)
+
+Learning rate - Shrinks the contribution of individual trees for each round of boosting so that no tree has too much influence. Basically, learning rate limits the influence of individual trees.  By lowering the learning rate, more trees are required to produce better scores. Lowering learning rate prevents over fitting because the size of weights carried forward is smaller.
+
+```{python}
+
+
+
+
+
+base_tree = DecisionTreeClassifier(max_depth=6)
+
+
+
+
+
+
+```
+
+
+
+
+```{python}
+
+
+adb=AdaBoostClassifier(random_state=1,estimator=base_tree)
+
+
+
+
+
+```
+
+
+
+
+
+```{python}
+
+
+
+
+adb_params={
+  'n_estimators':[1000, 3000, 5000, 8000, 10000],
+  'learning_rate':(0.0001,.001,.01,0.3, 0.4, 0.5,1)
+  
+}
+
+
+```
+
+
+
+
+```{python}
+
+
+
+
+adb_grid=RandomizedSearchCV(estimator=adb,
+param_distributions=adb_params,n_iter=2, scoring='roc_auc', cv=5, verbose=3, refit=True, n_jobs=-1)
+
+
+
+```
+
+
+
+
+
+```{python}
+
+
+
+adb_grid.fit(X_train_tr, y_train_rv)
+
+
+
+
+```
+
+
+
+
+
+
+```{python}
+
+
+
+adb_clf=adb_grid.best_estimator_
+
+
+
+```
+
+
+
+
+```{python}
+
+
+
+adb_clf
+
+
+
+
+```
+
+
+<br/><br/>
+
+
+The above display presents the paramters chosen for the AdaBoost model. 
+
+<br/><br/>
+
+
+
+
+```{python}
+
+
+
+
+adb_grid.best_params_
+
+
+
+```
+
+### Validation Metrics
+
+
+```{python}
+
+
+
+y_pred_valid_adb=adb_clf.predict(X_valid_tr)
+
+
+
+
+```
+
+
+
+
+
+```{python}
+
+
+
+
+print('****AdaBoost Validation Classification Report****')
+print(classification_report(y_valid_rv, y_pred_valid_adb))
+
+
+
+```
+
+
+
+
+```{python}
+
+
+
+
+adb_recall=recall_score(y_valid_rv, y_pred_valid_adb).round(2)
+
+
+
+
+```
+
+
+
+
+```{python}
+
+
+
+adb_precision=precision_score(y_valid_rv, y_pred_valid_adb).round(2)
+
+
+
+
+
+
+```
+
+
+
+
+```{python}
+
+
+
+adb_f1=f1_score(y_valid_rv, y_pred_valid_adb).round(2)
+
+
+
+```
+
+
+
+
+```{python}
+
+
+adb_accuracy=accuracy_score(y_valid_rv, y_pred_valid_adb).round(2)
+
+
+
+
+```
+
+
+
+
+```{python}
+
+
+cm_adb_vl = metrics.confusion_matrix(y_valid_rv, y_pred_valid_adb, labels=[0,1])
+df_cm_adb_vl = pd.DataFrame(cm_adb_vl, index=["Actual - No", "Actual - Yes"], columns=["Predicted - No", "Predicted - Yes"])
+group_counts = ["{0:0.0f}".format(value) for value in cm_adb_vl.flatten()]
+group_percentages = ["{0:.2%}".format(value) for value in cm_adb_vl.flatten()/np.sum(cm_adb_vl)]
+labels = [f"{v1}\n{v2}" for v1, v2 in zip(group_counts, group_percentages)]
+labels = np.asarray(labels).reshape(2,2)
+
+plt.figure(figsize=(9,9))
+sns.heatmap(df_cm_adb_vl, annot=labels, fmt='')
+plt.ylabel('True label')
+plt.xlabel('Predicted label')
+
+
+
+
+
+```
+
+
+
+
+```{python}
+
+
+
+
+
+
+
+
+
+```
+
+
+### Feature Importance
+
+
+```{python}
+
+
+
+
+feat_dict_adb= {}
+for col, val in sorted(zip(X_train_tr.columns,adb_clf.feature_importances_),key=lambda x:x[1],reverse=True):
+  feat_dict_adb[col]=val
+
+
+
+
+```
+
+
+
+
+
+```{python}
+
+
+
+
+feat_adb_df = pd.DataFrame({'Feature':feat_dict_adb.keys(),'Importance':feat_dict_adb.values()})
+
+
+
+
+```
+
+
+
+
+
+
+```{python}
+
+
+
+feat_adb_tp5=feat_adb_df.nlargest(5,"Importance")
+
+
+
+
+```
+
+
+
+
+
+```{python}
+
+
+
+
+values = feat_adb_tp5.Importance    
+idx = feat_adb_tp5.Feature
+plt.figure(figsize=(12,10))
+clrs = ['green' if (x < max(values)) else 'red' for x in values ]
+sns.barplot(y=idx,x=values,palette=clrs).set(title='Important features  AdaBoost Model')
+
+plt.ylabel("Features", fontsize=9)
+
+plt.tick_params(axis='x', which='major', labelsize=8)
+
+plt.tick_params(axis='y', labelsize=8, labelrotation=45)
+
+
+
+
+
+```
+
+
+
+
+```{python}
+
+
+
+
+
+
+
+
+```
+
+
+
+## Gradient Boosting
+
+
+<br/><br/>
+
+Gradient boosting also uses incorrect predictions from previous trees to adjust the next tree though this is accomplished by fitting each new tree based on the errors of the previous tree's predictions. Mistakes from the previous trees are used to build a new tree solely around these mistakes. As mentioned early in AdaBoost, gradient boosting is taking these errors (weak learner) and making them a strong learner.  The difference is the gradient boost algorithm only uses the errors from the previous tree in contrast to AdaBoost. 
+
+The main idea behind this algorithm is to build models sequentially and these subsequent models try to reduce the errors of the previous model. Errors are reduced  by building a new model on the errors or residuals of the previous model.
+
+
+<br/><br/>
+
+
+
+
+```{python}
+
+
+
+
+
+
+
+
+```
+
+
+
+
+```{python}
+
+
+
+
+
+
+
+
+```
+
+
+
+
+
+```{python}
+
+
+
+
+
+
+
+
+```
+
+
+
 
 
 
