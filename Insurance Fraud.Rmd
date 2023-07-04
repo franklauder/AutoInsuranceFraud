@@ -1592,7 +1592,8 @@ plt.figtext(0.5, -0.21, txt, wrap=True, horizontalalignment='center', fontsize=5
 ```{python}
 
 
-
+plt.show()
+plt.clf()
 
 
 ```
@@ -1659,7 +1660,8 @@ plt.subplots_adjust(wspace=0.45)
 ```{python}
 
 
-
+plt.show()
+plt.clf()
 
 
 
@@ -1724,7 +1726,8 @@ plt.subplots_adjust(wspace=0.45)
 ```{python}
 
 
-
+plt.show()
+plt.clf()
 
 
 
@@ -1790,7 +1793,8 @@ plt.subplots_adjust(wspace=0.45)
 
 
 
-
+plt.show()
+plt.clf()
 
 
 
@@ -1854,7 +1858,8 @@ plt.ylabel(None)
 
 
 
-
+plt.show()
+plt.clf()
 
 
 
@@ -2000,7 +2005,8 @@ plt.tick_params(axis='y', which='major', labelsize=5)
 
 
 
-
+plt.show()
+plt.clf()
 
 
 
@@ -2041,7 +2047,8 @@ plt.ylabel("Total Claim", fontsize=8)
 
 
 
-
+plt.show()
+plt.clf()
 
 
 
@@ -2081,7 +2088,8 @@ plt.ylabel(None)
 
 
 
-
+plt.show()
+plt.clf()
 
 
 
@@ -2246,7 +2254,8 @@ plt.tick_params(axis='y', which='major', labelsize=5)
 
 
 
-
+plt.show()
+plt.clf()
 
 
 
@@ -2284,7 +2293,8 @@ plt.ylabel("Total Claim", fontsize=8)
 
 
 
-
+plt.show()
+plt.clf()
 
 
 
@@ -2326,8 +2336,8 @@ plt.ylabel(None)
 
 
 
-
-
+plt.show()
+plt.clf()
 
 
 ```
@@ -2493,7 +2503,8 @@ plt.tick_params(axis='y', which='major', labelsize=5)
 
 
 
-
+plt.show()
+plt.clf()
 
 
 
@@ -3587,7 +3598,8 @@ plt.title("Confusion Matrix-Logistic Regression", fontsize=14)
 
 
 
-
+plt.show()
+plt.clf()
 
 
 
@@ -4234,8 +4246,8 @@ plt.title("Confusion Matrix-Decision Tree", fontsize=14)
 
 
 
-
-
+plt.show()
+plt.clf()
 
 
 ```
@@ -4321,7 +4333,8 @@ plt.tick_params(axis='y', which='major', labelsize=7,labelrotation=45)
 
 
 
-
+plt.show()
+plt.clf()
 
 
 
@@ -4680,7 +4693,8 @@ plt.title("Confusion Matrix-Random Forest", fontsize=14)
 
 
 
-
+plt.show()
+plt.clf()
 
 
 
@@ -4772,7 +4786,8 @@ plt.tick_params(axis='y', labelsize=8,labelrotation=45)
 
 
 
-
+plt.show()
+plt.clf()
 
 
 ```
@@ -5068,7 +5083,8 @@ plt.xlabel('Predicted label')
 
 
 
-
+plt.show()
+plt.clf()
 
 
 
@@ -5433,7 +5449,8 @@ plt.title("Confusion Matrix-Gradient Boost", fontsize=14)
 
 
 
-
+plt.show()
+plt.clf()
 
 
 ```
@@ -5510,7 +5527,8 @@ plt.tick_params(axis='y', labelsize=8, labelrotation=45)
 
 
 
-
+plt.show()
+plt.clf()
 
 
 
@@ -5816,6 +5834,18 @@ plt.tick_params(axis='y', labelsize=8, labelrotation=45)
 ```
 
 
+```{python}
+
+
+plt.show()
+plt.clf()
+
+
+
+```
+
+
+
 ## Light GBM
 
 <br/><br/>
@@ -6020,7 +6050,8 @@ plt.title("Confusion Matrix-Light Gradient Boost", fontsize=14)
 ```{python}
 
 
-
+plt.show()
+plt.clf()
 
 
 
@@ -6090,7 +6121,8 @@ plt.tick_params(axis='y', labelsize=8, labelrotation=45)
 
 
 
-
+plt.show()
+plt.clf()
 
 ```
 
@@ -6249,7 +6281,60 @@ y_pred_test_svc=svc_clf.predict(X_test_tr)
 
 
 
+print('******SVC Test Set Classification Report******')
 
+
+print(classification_report(y_test_rv, y_pred_test_svc))
+
+
+```
+
+
+
+
+```{python}
+
+
+
+svc_recall_test=recall_score(y_test_rv, y_pred_test_svc).round(2)
+
+
+```
+
+
+
+
+```{python}
+
+
+
+svc_precision_test=precision_score(y_test_rv, y_pred_test_svc).round(2)
+
+
+
+```
+
+
+
+
+```{python}
+
+
+svc_f1_test=f1_score(y_test_rv, y_pred_test_svc).round(2)
+
+
+
+```
+
+
+## Random Forest
+
+
+```{python}
+
+
+
+rf_recall_test=recall_score(y_test_rv, y_pred_test_rf).round(2)
 
 
 ```
@@ -6262,6 +6347,7 @@ y_pred_test_svc=svc_clf.predict(X_test_tr)
 
 
 
+rf_precision_test=precision_score(y_test_rv, y_pred_test_rf).round(2)
 
 
 ```
@@ -6272,19 +6358,7 @@ y_pred_test_svc=svc_clf.predict(X_test_tr)
 ```{python}
 
 
-
-
-
-
-
-```
-
-
-
-
-```{python}
-
-
+rf_f1_test=f1_score(y_test_rv, y_pred_test_rf).round(2)
 
 
 
@@ -6297,10 +6371,3704 @@ y_pred_test_svc=svc_clf.predict(X_test_tr)
 
 
 
+print('******Random Forest Test Set Classification Report******')
+
+
+print(classification_report(y_test_rv, y_pred_test_rf))
 
 
 
 ```
+
+
+
+<br/><br/>
+
+## Ada Boost
+
+<br/><br/>
+
+```{python}
+
+
+
+y_pred_test_adb=adb_clf.predict(X_test_tr)
+
+
+
+```
+
+
+
+
+<br/><br/>
+
+```{python echo=FALSE}
+
+
+print('******AdaBoost Test Set Classification Report******')
+
+
+print(classification_report(y_test_rv, y_pred_test_adb))
+
+
+```
+
+<br/><br/>
+
+```{python}
+
+
+
+adb_recall_test=recall_score(y_test_rv, y_pred_test_adb).round(2)
+
+
+
+```
+
+
+
+```{python}
+
+
+adb_precision_test=precision_score(y_test_rv, y_pred_test_adb).round(2)
+
+
+
+```
+
+
+
+
+```{python}
+
+
+adb_f1_test=f1_score(y_test_rv, y_pred_test_adb).round(2)
+
+
+
+```
+
+
+<br/><br/>
+
+## Gradient Boosting
+
+<br/><br/>
+
+```{python}
+
+y_pred_test_gb=gb_clf.predict(X_test_tr)
+
+
+
+
+```
+
+<br/><br/>
+
+
+```{python echo=FALSE}
+
+
+print('******Gradient Boost Test Set Classification Report******')
+
+
+print(classification_report(y_test_rv, y_pred_test_gb))
+
+
+
+
+```
+
+<br/><br/>
+
+```{python}
+
+
+gb_recall_test=recall_score(y_test_rv, y_pred_test_gb).round(2)
+
+
+
+```
+
+
+```{python}
+
+
+gb_precision_test=precision_score(y_test_rv, y_pred_test_gb).round(2)
+
+
+```
+
+
+```{python include=FALSE}
+
+pickle_in=open("gb_precision_test","rb")
+gb_precision_test=pickle.load(pickle_in)
+
+
+
+
+```
+
+```{python}
+
+gb_f1_test=f1_score(y_test_rv, y_pred_test_gb).round(2)
+
+
+
+```
+
+
+
+<br/><br/>
+
+## Extreme Gradient Boosting
+
+<br/><br/>
+
+```{python}
+
+
+y_pred_test_xg=xg_clf.predict(X_test_tr)
+
+
+```
+
+```{python eval=FALSE, include=FALSE}
+
+
+file_out=open("y_pred_test_xg","wb")
+pickle.dump(y_pred_test_xg, file_out)
+file_out.close()
+
+
+```
+
+```{python include=FALSE}
+
+
+pickle_in=open("y_pred_test_xg","rb")
+y_pred_test_xg=pickle.load(pickle_in)
+
+
+
+```
+
+<br/><br/>
+
+```{python echo=FALSE}
+
+
+print('******Extreme Gradient Boost Test Set Classification Report******')
+
+print(classification_report(y_test_rv, y_pred_test_xg))
+
+
+
+```
+
+<br/><br/>
+
+```{python}
+
+
+xg_recall_test=recall_score(y_test_rv, y_pred_test_xg).round(2)
+
+
+
+```
+
+```{python eval=FALSE, include=FALSE}
+
+
+
+file_out=open("xg_recall_test","wb")
+pickle.dump(xg_recall_test, file_out)
+file_out.close()
+
+
+```
+
+```{python include=FALSE}
+
+
+pickle_in=open("xg_recall_test","rb")
+xg_recall_test=pickle.load(pickle_in)
+
+
+
+```
+
+```{python}
+
+
+xg_precision_test=precision_score(y_test_rv, y_pred_test_xg).round(2)
+
+
+```
+
+```{python eval=FALSE, include=FALSE}
+
+file_out=open("xg_precision_test","wb")
+pickle.dump(xg_precision_test, file_out)
+file_out.close()
+
+
+
+```
+
+```{python include=FALSE}
+
+pickle_in=open("xg_precision_test","rb")
+xg_precision_test=pickle.load(pickle_in)
+
+
+
+```
+
+```{python}
+
+
+xg_f1_test=f1_score(y_test_rv, y_pred_test_xg).round(2)
+
+
+
+```
+
+```{python eval=FALSE, include=FALSE}
+
+
+file_out=open("xg_f1_test","wb")
+pickle.dump(xg_f1_test, file_out)
+file_out.close()
+
+
+
+```
+
+```{python include=FALSE}
+
+
+pickle_in=open("xg_f1_test","rb")
+xg_f1_test=pickle.load(pickle_in)
+
+
+
+```
+
+<br/><br/>
+
+## Light LGB
+
+<br/><br/>
+
+```{python}
+
+
+y_pred_test_lgb=lgb_clf.predict(X_test_tr)
+
+
+
+```
+
+```{python eval=FALSE, include=FALSE}
+
+file_out=open("y_pred_test_lgb","wb")
+pickle.dump(y_pred_test_lgb, file_out)
+file_out.close()
+
+
+
+```
+
+```{python include=FALSE}
+
+
+pickle_in=open("y_pred_test_lgb","rb")
+y_pred_test_lgb=pickle.load(pickle_in)
+
+
+
+```
+
+<br/><br/>
+
+```{python echo=FALSE}
+
+
+print('******Light Gradient Boost Test Set Classification Report******')
+
+print(classification_report(y_test_rv, y_pred_test_lgb))
+
+
+
+```
+
+<br/><br/>
+
+```{python}
+
+
+lgb_recall_test=recall_score(y_test_rv, y_pred_test_lgb).round(2)
+
+
+```
+
+```{python eval=FALSE, include=FALSE}
+
+
+
+file_out=open("lgb_recall_test","wb")
+pickle.dump(lgb_recall_test, file_out)
+file_out.close()
+
+
+```
+
+```{python include=FALSE}
+
+
+pickle_in=open("lgb_recall_test","rb")
+lgb_recall_test=pickle.load(pickle_in)
+
+
+
+```
+
+```{python}
+
+
+lgb_precision_test=precision_score(y_test_rv, y_pred_test_lgb).round(2)
+
+
+
+```
+
+```{python eval=FALSE, include=FALSE}
+
+
+file_out=open("lgb_precision_test","wb")
+pickle.dump(lgb_precision_test, file_out)
+file_out.close()
+
+
+
+```
+
+```{python include=FALSE}
+
+
+pickle_in=open("lgb_precision_test","rb")
+lgb_precision_test=pickle.load(pickle_in)
+
+
+
+```
+
+```{python}
+
+lgb_f1_test=f1_score(y_test_rv, y_pred_test_lgb).round(2)
+
+
+
+```
+
+```{python eval=FALSE, include=FALSE}
+
+
+file_out=open("lgb_f1_test","wb")
+pickle.dump(lgb_f1_test, file_out)
+file_out.close()
+
+
+```
+
+```{python include=FALSE}
+
+
+pickle_in=open('lgb_f1_test',"rb")
+lgb_f1_test=pickle.load(pickle_in)
+
+
+```
+
+<br/><br/>
+
+## Comparison
+
+<br/><br/>
+
+```{python}
+
+
+test_val_scores=pd.DataFrame({'Model':['Support Vector Machine', 'Random Forest','Ada Boost', 'Gradient Boosting', 'Extreme Gradient Boosting', 'Light GBM'],
+'Recall Validation':[svc_recall, rf_recall,adb_recall, gb_recall, xg_recall, lgb_recall],
+'Recall Test':[svc_recall_test, rf_recall_test,adb_recall_test, gb_recall_test, xg_recall_test, lgb_recall_test],
+'Precision Validation':[svc_precision, rf_precision,adb_precision, gb_precision, xg_precision, lgb_precision],
+'Precision Test':[svc_precision_test, rf_precision_test,adb_precision_test, gb_precision_test, xg_precision_test, lgb_precision_test],
+'F1 Validation':[svc_f1, rf_f1,adb_f1, gb_f1, xg_f1, lgb_f1],
+'F1 Test':[svc_f1_test, rf_f1_test,adb_f1_test, gb_f1_test, xg_f1_test, lgb_f1_test]
+})
+
+
+
+
+
+
+```
+
+<br/><br/>
+
+```{python eval=FALSE, include=FALSE}
+
+
+file_out=open("test_val_scores","wb")
+pickle.dump(test_val_scores, file_out)
+file_out.close()
+
+
+
+
+```
+
+```{python include=FALSE}
+
+
+
+pickle_in=open('test_val_scores',"rb")
+test_val_scores=pickle.load(pickle_in)
+
+
+
+```
+
+```{python eval=FALSE, include=FALSE}
+
+
+test_val_scores.head(10)
+
+
+```
+
+```{python eval=FALSE, include=FALSE}
+
+file_out=open("test_val_scores","wb")
+pickle.dump(test_val_scores, file_out)
+file_out.close()
+
+
+
+
+```
+
+```{python eval=FALSE, include=FALSE}
+
+pickle_in=open('test_val_scores',"rb")
+test_val_scores=pickle.load(pickle_in)
+
+
+
+```
+
+```{python eval=FALSE, include=FALSE}
+
+
+
+r.r_test_scores=test_val_scores
+
+
+
+```
+
+```{r eval=FALSE, include=FALSE}
+
+
+glimpse(r_test_scores)
+
+
+
+
+```
+
+```{r eval=FALSE, include=FALSE}
+
+
+
+
+
+r_test_scores=r_test_scores %>% 
+  rename(precision_test='Precision Test')
+  
+  
+  
+```
+
+```{r eval=FALSE, include=FALSE}
+
+
+saveRDS(r_test_scores,"r_test_scores")
+
+
+
+```
+
+```{r include=FALSE}
+
+
+r_test_scores<-readRDS("r_test_scores")
+
+
+
+```
+
+```{r eval=FALSE, include=FALSE}
+
+
+
+
+
+test_prec_plt<-ggplot(r_test_scores, aes(x=reorder(Model, -precision_test), y = precision_test, fill=Model))+ 
+  geom_bar(stat = "identity")+
+  ggtitle("Test Precision Scores")+
+  labs( fill = "Model")+
+  scale_y_continuous(labels=scales::percent_format())+
+  geom_text(aes(label=precision_test,
+        vjust=.09),size=2.5)+
+  theme(axis.ticks.x=element_blank(),
+        axis.title.y=element_blank(),
+        axis.title.x=element_blank(),
+        axis.text.x=element_text(angle=70, size=8,hjust=1),
+        axis.text.y=element_blank(),
+        axis.ticks = element_blank(),
+        legend.position = "none",
+        plot.title=element_text(size=10, hjust=0.5))+
+  expand_limits(y = c(0, 0.99))
+
+
+
+
+```
+
+```{r eval=FALSE, include=FALSE}
+
+
+saveRDS(test_prec_plt,"test_prec_plt")
+
+
+
+
+```
+
+```{r eval=FALSE, include=FALSE}
+
+
+test_prec_plt=readRDS("test_prec_plt")
+
+
+
+```
+
+```{r eval=FALSE, include=FALSE,}
+
+
+test_prec_plt
+
+
+
+```
+
+```{r}
+
+
+
+
+
+
+
+test_precision_plt<-ggplot(r_test_scores, aes(x=reorder(Model, -precision_test), y = precision_test, fill=Model))+ 
+    geom_segment( aes(xend=Model, yend=0)) +
+    geom_point( size=6, color="pink") +
+  ggtitle("Test Precision Scores")+
+  scale_y_continuous(labels=scales::percent_format())+
+  geom_text(aes(label=precision_test,
+        vjust=0.7, hjust=0.3),size=2.0, color="black")+
+    theme(plot.title = element_text(color="blue", size=10, face="bold.italic", hjust=0.5))+
+   theme(axis.ticks.x=element_blank(),
+        axis.title.y=element_blank(),
+        axis.title.x=element_blank(),
+        axis.text.y=element_text(size=8,hjust=1),
+        axis.text.x=element_blank(),
+        axis.ticks = element_blank(),
+        legend.position = "none")+
+  expand_limits(x = c(0, 0.97))+
+  coord_flip()
+
+
+
+
+
+```
+
+```{r eval=FALSE, include=FALSE}
+
+
+saveRDS(test_precision_plt,"test_precision_plt")
+
+
+
+```
+
+```{r include=FALSE}
+
+
+test_precision_plt<-readRDS("test_precision_plt")
+
+
+
+
+```
+
+<br/><br/>
+
+```{r echo=FALSE,fig.cap="Figure 41"}
+
+
+
+test_precision_plt
+
+
+
+```
+
+<br/><br/>
+
+```{python eval=FALSE, include=FALSE}
+
+
+
+test_val_scores[['Model', 'Precision Validation', 'Precision Test']]
+
+
+
+
+```
+
+<br/><br/> 
+
+The suport vector machine test precision score remained the same as its validation precision score. The ensemble models had small decreases in their test precision scores compared to their validation scores. This indicates possible  slight over fitting.
+
+<br/><br/>
+
+# Selected Best Models
+
+<br/><br/>
+
+We will build models usiing algorithms from the previous models with precision scores above 0.88 and evaluate them with cross validation.
+
+<br/><br/>
+
+## Pre-processing
+
+<br/><br/>
+
+```{python include=FALSE}
+
+
+model_data_2=model_data.copy()
+
+
+
+```
+
+<br/><br/>
+
+## Split data
+
+```{python}
+
+X_cv=model_data.drop("ReportedFraud", axis=1)
+
+y_cv=model_data["ReportedFraud"]
+
+
+
+```
+
+```{python}
+
+y_cv=pd.DataFrame(y_cv)
+
+
+
+```
+
+```{python}
+
+
+
+y_cv["ReportedFraud"]=label_encoder.fit_transform(y_cv["ReportedFraud"])
+
+
+
+```
+
+<br/><br/>
+
+```{python echo=FALSE}
+
+
+print('*****X_cv Shape*****')
+
+X_cv.shape
+
+
+```
+
+<br/><br/>
+
+```{python echo=FALSE}
+
+print('*****y_cv Shape*****')
+
+y_cv.shape
+
+
+```
+
+```{python eval=FALSE, include=FALSE}
+
+
+file_out=open("X_cv","wb")
+pickle.dump(X_cv, file_out)
+file_out.close()
+
+
+
+```
+
+```{python include=FALSE}
+
+
+pickle_in=open("X_cv","rb")
+X_cv=pickle.load(pickle_in)
+
+
+
+```
+
+```{python eval=FALSE, include=FALSE}
+
+file_out=open("y_cv","wb")
+pickle.dump(y_cv, file_out)
+file_out.close()
+
+
+
+```
+
+```{python include=FALSE}
+
+pickle_in=open("y_cv","rb")
+y_cv=pickle.load(pickle_in)
+
+
+
+```
+
+<br/><br/>
+
+## Split data Train/Test
+
+```{python}
+
+
+X_train_cv, X_test_cv, y_train_cv, y_test_cv=train_test_split(X_cv,y_cv, test_size=0.3,random_state=42, stratify=y_cv)
+
+
+
+
+```
+
+<br/><br/>
+
+```{python echo=FALSE}
+
+
+print('*****X_train_cv Shape*****')
+
+X_train_cv.shape
+
+
+
+
+
+
+```
+
+<br/><br/>
+
+```{python echo=FALSE}
+
+
+print('*****X_test_cv Shape*****')
+
+X_test_cv.shape
+
+
+
+
+```
+
+<br/><br/>
+
+```{python echo=FALSE}
+
+
+print('*****y_train_cv Shape*****')
+
+y_train_cv.shape
+
+
+
+
+```
+
+<br/><br/>
+
+```{python echo=FALSE}
+
+print('*****y_test_cv Shape*****')
+
+y_test_cv.shape
+
+
+```
+
+<br/><br/>
+
+```{python echo=FALSE}
+
+
+print('*****y_train_cv Type*****')
+
+type(y_train_cv)
+
+
+
+
+```
+
+<br/><br/>
+
+```{python echo=FALSE}
+
+
+
+print('*****X_test_cv Type*****')
+type(y_test_cv)
+
+
+
+
+```
+
+<br/><br/>
+
+```{python eval=FALSE, include=FALSE}
+
+
+file_out=open("X_train_cv","wb")
+pickle.dump(X_train_cv, file_out)
+file_out.close()
+
+
+```
+
+```{python include=FALSE}
+
+pickle_in=open("X_train_cv","rb")
+X_train_cv=pickle.load(pickle_in)
+
+
+
+```
+
+```{python eval=FALSE, include=FALSE}
+
+file_out=open("X_test_cv","wb")
+pickle.dump(X_test_cv, file_out)
+file_out.close()
+
+
+
+```
+
+```{python include=FALSE}
+
+
+pickle_in=open("X_test_cv","rb")
+X_test_cv=pickle.load(pickle_in)
+
+
+```
+
+```{python eval=FALSE, include=FALSE}
+
+
+file_out=open("y_train_cv","wb")
+pickle.dump(y_train_cv, file_out)
+file_out.close()
+
+```
+
+```{python include=FALSE}
+
+
+pickle_in=open("y_train_cv","rb")
+y_train_cv=pickle.load(pickle_in)
+
+
+```
+
+```{python eval=FALSE, include=FALSE}
+
+
+
+file_out=open("y_test_cv","wb")
+pickle.dump(y_test_cv, file_out)
+file_out.close()
+
+```
+
+```{python include=FALSE}
+
+pickle_in=open("y_test_cv","rb")
+y_test_cv=pickle.load(pickle_in)
+
+
+
+
+```
+
+<br/><br/>
+
+```{python}
+
+
+
+y_train_cv_np=np.array(y_train_cv)
+
+y_test_cv_np=np.array(y_test_cv)
+
+
+
+
+
+```
+
+```{python eval=FALSE, include=FALSE}
+
+file_out=open("y_train_cv_np","wb")
+pickle.dump(y_train_cv_np, file_out)
+file_out.close()
+
+
+```
+
+```{python include=FALSE}
+
+
+pickle_in=open("y_train_cv_np","rb")
+y_train_cv_np=pickle.load(pickle_in)
+
+
+```
+
+```{python eval=FALSE, include=FALSE}
+
+file_out=open("y_test_cv_np","wb")
+pickle.dump(y_test_cv_np, file_out)
+file_out.close()
+
+
+```
+
+```{python include=FALSE}
+
+pickle_in=open("y_test_cv_np","rb")
+y_test_cv_np=pickle.load(pickle_in)
+
+
+```
+
+<br/><br/>
+
+```{python echo=FALSE}
+
+
+
+
+print('*****y_train_cv_np Shape*****')
+
+y_train_cv_np.shape
+
+
+
+
+
+```
+
+<br/><br/>
+
+```{python echo=FALSE}
+
+
+
+print('*****y_test_cv_np Shape*****')
+
+y_test_cv_np.shape
+
+
+```
+
+<br/><br/>
+
+```{python}
+
+
+y_train_cv_rv=np.ravel(y_train_cv_np)
+
+
+
+y_test_cv_rv=np.ravel(y_test_cv_np)
+
+
+
+
+```
+
+<br/><br/>
+
+```{python echo=FALSE}
+
+
+print('*****y_train_cv_rv Shape*****')
+
+y_train_cv_rv.shape
+
+
+
+```
+
+<br/><br/>
+
+```{python echo=FALSE}
+
+
+print('*****y_test_cv_rv Shape*****')
+
+
+y_test_cv_rv.shape
+
+
+
+```
+
+```{python eval=FALSE, include=FALSE}
+
+file_out=open("y_train_cv_rv","wb")
+pickle.dump(y_train_cv_rv, file_out)
+file_out.close()
+
+
+
+```
+
+```{python include=FALSE}
+
+
+pickle_in=open("y_train_cv_rv","rb")
+y_train_cv_rv=pickle.load(pickle_in)
+
+
+
+```
+
+```{python eval=FALSE, include=FALSE}
+
+
+
+file_out=open("y_test_cv_rv","wb")
+pickle.dump(y_test_cv_rv, file_out)
+file_out.close()
+
+
+```
+
+```{python include=FALSE}
+
+pickle_in=open("y_test_cv_rv","rb")
+y_test_cv_rv=pickle.load(pickle_in)
+
+
+
+```
+
+<br/><br/>
+
+## Transform Categorical and NumericaL features
+
+<br/><br/>
+
+```{python}
+
+#Define classification columns
+categorical_2 =list(X_train_cv.select_dtypes('category').columns)
+print(f"Categorical columns are: {categorical_2}")
+
+
+
+
+```
+
+```{python}
+
+
+#Define numeric columns
+numerical_2 = list(X_train_cv.select_dtypes('number').columns)
+print(f"Numerical columns are: {numerical_2}")
+
+
+
+```
+
+```{python}
+
+
+ct_tr_2=ColumnTransformer(
+  transformers=[
+   ('num',StandardScaler(), numerical_2),
+   ('cat',OneHotEncoder(handle_unknown='ignore', sparse_output=False,drop='if_binary'), categorical_2)
+]
+)
+
+
+
+
+```
+
+<br/><br/>
+
+```{python}
+
+
+X_train_cv_tr=ct_tr_2.fit_transform(X_train_cv)
+
+
+
+```
+
+```{python eval=FALSE, include=FALSE}
+
+file_out=open("X_train_cv_tr","wb")
+pickle.dump(X_train_cv_tr, file_out)
+file_out.close()
+
+
+
+
+```
+
+```{python include=FALSE}
+
+
+pickle_in=open("X_train_cv_tr","rb")
+X_train_cv_tr=pickle.load(pickle_in)
+
+
+```
+
+<br/><br/>
+
+```{python echo=FALSE}
+
+
+
+print('*****X_train_cv_tr Shape*****')
+
+X_train_cv_tr.shape
+
+
+
+```
+
+<br/><br/>
+
+```{python}
+
+
+X_test_cv_tr=ct_tr_2.transform(X_test_cv)
+
+
+
+```
+
+<br/><br/>
+
+```{python eval=FALSE, include=FALSE}
+
+
+file_out=open("X_test_cv_tr","wb")
+pickle.dump(X_test_cv_tr, file_out)
+file_out.close()
+
+
+```
+
+```{python include=FALSE}
+
+
+
+pickle_in=open("X_test_cv_tr","rb")
+X_test_cv_tr=pickle.load(pickle_in)
+
+
+```
+
+<br/><br/>
+
+```{python echo=FALSE}
+
+
+
+print('*****X_test_cv_tr Shape*****')
+
+X_test_cv_tr.shape
+
+
+```
+
+<br/><br/>
+
+## Cross Validation
+
+<br/><br/>
+
+<br/><br/>
+
+For the next models we will use cross validation on our training set.
+
+<br/><br/>
+
+<br/><br/>
+
+Cross validation partitions the training set into equal subsets. The subsets will be used to assess a models performance on training data.
+
+The process works by setting aside the first fold as a test set and the remaining subsets are used as the aggregated training set. The model is trained on the aggregated training set then the performance is evaluated on the testing set. This will continue until all folds have been held out as a test set. An evaluation metric is calculated for each iteration then averaged together. This results in a cross validated metric.
+
+This allows us to evaluate our model on different test sets without having to expose the model to the actual test set.
+
+<br/><br/>
+
+```{python}
+
+
+from sklearn.model_selection import cross_val_score,StratifiedKFold
+
+
+
+```
+
+<br/><br/>
+
+Stratified fold includes the same percentage of target values in each fold. This will set the number of folds used in our cross validation which for this analysis will be five.
+
+<br/><br/>
+
+```{python}
+
+
+skf = StratifiedKFold(n_splits=5, shuffle=True, random_state=1)
+
+
+```
+
+<br/><br/>
+
+### Support Vector Machine
+
+<br/><br/>
+
+```{python}
+
+
+grid_svc_2=RandomizedSearchCV(svc_ln,param_grid_svc, refit=True, 
+verbose=3,cv=5,n_iter=2, scoring='roc_auc',return_train_score=True, n_jobs=-1)
+
+
+
+```
+
+```{python}
+
+
+
+
+grid_svc_2.fit(X_train_cv_tr, y_train_cv_rv)
+
+
+```
+
+<br/><br/>
+
+```{python}
+
+svc_clf_cv=grid_svc_2.best_estimator_
+
+
+```
+
+<br/><br/>
+
+```{python eval=FALSE, include=FALSE}
+
+
+file_out=open("svc_clf_cv","wb")
+pickle.dump(svc_clf_cv, file_out)
+file_out.close()
+
+
+
+```
+
+```{python include=FALSE}
+
+pickle_in=open("svc_clf_cv","rb")
+svc_clf_cv=pickle.load(pickle_in)
+
+
+
+```
+
+<br/><br/>
+
+```{python echo=FALSE}
+
+
+svc_clf_cv
+
+
+
+
+```
+
+<br/><br/>
+
+```{python}
+
+
+
+svc_cv_f1_score=cross_val_score(svc_clf_cv, X_train_cv_tr, y_train_cv_rv, 
+scoring='f1', cv=skf, n_jobs=-1).mean().round(2)
+
+
+
+```
+
+<br/><br/>
+
+```{python eval=FALSE, include=FALSE}
+
+
+svc_cv_f1_score=svc_cv_f1_score.round(2)
+
+
+
+```
+
+<br/><br/>
+
+```{python eval=FALSE, include=FALSE}
+
+
+file_out=open("svc_cv_f1_score","wb")
+pickle.dump(svc_cv_f1_score, file_out)
+file_out.close()
+
+
+
+```
+
+```{python include=FALSE}
+
+
+pickle_in=open("svc_cv_f1_score","rb")
+svc_cv_f1_score=pickle.load(pickle_in)
+
+
+
+```
+
+```{python}
+
+
+svc_cv_recall_score=cross_val_score(svc_clf_cv, X_train_cv_tr, y_train_cv_rv, 
+scoring='recall', cv=skf, n_jobs=-1).mean().round(2)
+
+
+
+```
+
+```{python eval=FALSE, include=FALSE}
+
+
+svc_cv_recall_score=svc_cv_recall_score.round(2)
+
+
+```
+
+```{python eval=FALSE, include=FALSE}
+
+file_out=open("svc_cv_recall_score","wb")
+pickle.dump(svc_cv_recall_score, file_out)
+file_out.close()
+
+
+
+```
+
+```{python include=FALSE}
+
+pickle_in=open("svc_cv_recall_score","rb")
+svc_cv_recall_score=pickle.load(pickle_in)
+
+
+
+```
+
+```{python}
+
+
+svc_cv_precision_score=cross_val_score(svc_clf_cv, X_train_cv_tr, y_train_cv_rv, 
+scoring='precision', cv=skf, n_jobs=-1).mean().round(2)
+
+
+```
+
+```{python eval=FALSE, include=FALSE}
+
+
+file_out=open("svc_cv_precision_score","wb")
+pickle.dump(svc_cv_precision_score, file_out)
+file_out.close()
+
+
+
+
+```
+
+```{python include=FALSE}
+
+
+
+pickle_in=open("svc_cv_precision_score","rb")
+svc_cv_precision_score=pickle.load(pickle_in)
+
+
+```
+
+```{python eval=FALSE, include=FALSE}
+
+
+
+adb_cv_grid=RandomizedSearchCV(estimator=adb,
+param_distributions=adb_params,n_iter=2, scoring='roc_auc', cv=5, verbose=3, refit=True, n_jobs=-1)
+
+
+
+
+```
+
+```{python eval=FALSE, include=FALSE}
+
+
+adb_cv_grid.fit(X_train_cv_tr, y_train_cv_rv)
+
+
+
+```
+
+```{python eval=FALSE, include=FALSE}
+
+adb_clf_cv=adb_cv_grid.best_estimator_
+
+
+
+
+```
+
+```{python eval=FALSE, include=FALSE}
+
+file_out=open("adb_clf_cv","wb")
+pickle.dump(adb_clf_cv, file_out)
+file_out.close()
+
+
+```
+
+```{python include=FALSE}
+
+
+pickle_in=open("adb_clf_cv","rb")
+adb_clf_cv=pickle.load(pickle_in)
+
+
+
+```
+
+```{python eval=FALSE, include=FALSE}
+
+
+adb_cv_f1_score=cross_val_score(adb_clf_cv, X_train_cv_tr, y_train_cv_rv, 
+scoring='f1', cv=skf, n_jobs=-1).mean()
+
+
+```
+
+```{python eval=FALSE, include=FALSE}
+
+
+file_out=open("adb_clf_cv","wb")
+pickle.dump(adb_clf_cv, file_out)
+file_out.close()
+
+
+```
+
+```{python include=FALSE}
+
+
+pickle_in=open("svc_clf_cv","rb")
+svc_clf_cv=pickle.load(pickle_in)
+
+
+
+```
+
+```{python eval=FALSE, include=FALSE}
+
+
+
+adb_cv_recall_score=cross_val_score(adb_clf_cv, X_train_cv_tr, y_train_cv_rv, 
+scoring='recall', cv=skf, n_jobs=-1).mean().round(2)
+
+
+
+```
+
+```{python eval=FALSE, include=FALSE}
+
+adb_cv_recall_score=adb_cv_recall_score.round(2)
+
+
+
+```
+
+```{python eval=FALSE, include=FALSE}
+
+
+file_out=open("adb_cv_recall_score","wb")
+pickle.dump(adb_cv_recall_score, file_out)
+file_out.close()
+
+
+```
+
+```{python include=FALSE}
+
+
+
+pickle_in=open("adb_cv_recall_score","rb")
+adb_cv_recall_score=pickle.load(pickle_in)
+
+
+```
+
+```{python eval=FALSE, include=FALSE}
+
+
+adb_cv_precision_score=cross_val_score(adb_clf_cv, X_train_cv_tr, y_train_cv_rv, 
+scoring='precision', cv=skf, n_jobs=-1).mean().round(2)
+
+
+
+
+```
+
+```{python eval=FALSE, include=FALSE}
+
+
+file_out=open("adb_cv_precision_score","wb")
+pickle.dump(adb_cv_precision_score, file_out)
+file_out.close()
+
+
+```
+
+```{python include=FALSE}
+
+pickle_in=open("adb_cv_precision_score","rb")
+adb_cv_precision_score=pickle.load(pickle_in)
+
+
+
+```
+
+### Random Forest
+
+```{python}
+
+
+
+search_cv_rf=RandomizedSearchCV(rf, rf_params, n_iter=2,refit=True, verbose=3,cv=5, scoring='roc_auc',return_train_score=True, n_jobs=-1)
+
+
+
+```
+
+<br/><br/>
+
+```{python}
+
+
+search_cv_rf.fit(X_train_cv_tr, y_train_cv_rv)
+
+
+
+```
+
+<br/><br/>
+
+```{python}
+
+
+
+rf_clf_cv=search_cv_rf.best_estimator_
+
+
+
+
+```
+
+<br/><br/>
+
+```{python eval=FALSE, include=FALSE}
+
+
+
+file_out=open("rf_clf_cv","wb")
+pickle.dump(rf_clf_cv, file_out)
+file_out.close()
+
+```
+
+```{python include=FALSE}
+
+
+pickle_in=open("rf_clf_cv","rb")
+rf_clf_cv=pickle.load(pickle_in)
+
+
+
+```
+
+<br/><br/>
+
+```{python echo=FALSE}
+
+
+
+
+
+rf_clf_cv
+
+
+
+```
+
+<br/><br/>
+
+```{python}
+
+
+rf_cv_f1_score=cross_val_score(rf_clf_cv, X_train_cv_tr, y_train_cv_rv, 
+scoring='f1', cv=skf, n_jobs=-1).mean().round(2)
+
+
+
+
+```
+
+```{python eval=FALSE, include=FALSE}
+
+
+file_out=open("rf_cv_f1_score","wb")
+pickle.dump(rf_cv_f1_score, file_out)
+file_out.close()
+
+
+
+```
+
+```{python include=FALSE}
+
+pickle_in=open("rf_cv_f1_score","rb")
+rf_cv_f1_score=pickle.load(pickle_in)
+
+
+
+
+
+```
+
+```{python}
+
+rf_cv_recall_score=cross_val_score(rf_clf_cv, X_train_cv_tr, y_train_cv_rv, 
+scoring='recall', cv=skf, n_jobs=-1).mean().round(2)
+
+
+
+
+
+```
+
+```{python eval=FALSE, include=FALSE}
+
+
+file_out=open("rf_cv_recall_score","wb")
+pickle.dump(rf_cv_recall_score, file_out)
+file_out.close()
+
+
+```
+
+```{python include=FALSE}
+
+pickle_in=open("rf_cv_recall_score","rb")
+rf_cv_recall_score=pickle.load(pickle_in)
+
+
+
+
+```
+
+```{python}
+
+
+rf_cv_precision_score=cross_val_score(rf_clf_cv, X_train_cv_tr, y_train_cv_rv, 
+scoring='precision', cv=skf, n_jobs=-1).mean().round(2)
+
+
+
+
+```
+
+```{python eval=FALSE, include=FALSE}
+
+
+
+
+file_out=open("rf_cv_precision_score","wb")
+pickle.dump(rf_cv_precision_score, file_out)
+file_out.close()
+
+```
+
+```{python include=FALSE}
+
+
+
+
+pickle_in=open("rf_cv_precision_score","rb")
+rf_cv_precision_score=pickle.load(pickle_in)
+
+
+```
+
+<br/><br/>
+
+### AdaBoost
+
+<br/><br/>
+
+```{python}
+
+
+
+adb_params={
+  'n_estimators':[1000, 3000, 5000, 8000, 10000],
+  'learning_rate':(0.0001,.001,.01,0.3, 0.4, 0.5,1)
+  
+}
+
+
+
+```
+
+```{python}
+
+
+
+search_cv_adb=RandomizedSearchCV(estimator=adb,
+param_distributions=adb_params,n_iter=2, scoring='roc_auc', cv=5, verbose=3, refit=True, n_jobs=-1)
+
+
+
+```
+
+<br/><br/>
+
+```{python}
+
+
+
+search_cv_adb.fit(X_train_cv_tr, y_train_cv_rv)
+
+
+```
+
+<br/><br/>
+
+```{python}
+
+
+adb_clf_cv=search_cv_adb.best_estimator_
+
+
+
+
+```
+
+<br/><br/>
+
+```{python eval=FALSE, include=FALSE}
+
+
+
+file_out=open("adb_clf_cv","wb")
+pickle.dump(adb_clf_cv, file_out)
+file_out.close()
+
+
+
+```
+
+```{python include=FALSE}
+
+
+
+
+pickle_in=open("adb_clf_cv","rb")
+adb_clf_cv=pickle.load(pickle_in)
+
+
+```
+
+<br/><br/>
+
+```{python echo=FALSE}
+
+
+adb_clf_cv
+
+
+
+
+```
+
+<br/><br/>
+
+```{python}
+
+
+adb_cv_f1_score=cross_val_score(adb_clf_cv, X_train_cv_tr, y_train_cv_rv, 
+scoring='f1', cv=skf, n_jobs=-1).mean().round(2)
+
+
+
+
+```
+
+```{python eval=FALSE, include=FALSE}
+
+
+
+file_out=open("adb_cv_f1_score","wb")
+pickle.dump(adb_cv_f1_score, file_out)
+file_out.close()
+
+
+
+```
+
+```{python include=FALSE}
+
+
+pickle_in=open("adb_cv_f1_score","rb")
+adb_cv_f1_score=pickle.load(pickle_in)
+
+
+
+```
+
+```{python}
+
+adb_cv_recall_score=cross_val_score(adb_clf_cv, X_train_cv_tr, y_train_cv_rv, 
+scoring='recall', cv=skf, n_jobs=-1).mean().round(2)
+
+
+
+```
+
+```{python eval=FALSE, include=FALSE}
+
+file_out=open("adb_cv_recall_score","wb")
+pickle.dump(adb_cv_recall_score, file_out)
+file_out.close()
+
+
+
+
+```
+
+```{python include=FALSE}
+
+
+pickle_in=open("adb_cv_recall_score","rb")
+adb_cv_recall_score=pickle.load(pickle_in)
+
+
+
+
+```
+
+```{python}
+
+
+adb_cv_precision_score=cross_val_score(adb_clf_cv, X_train_cv_tr, y_train_cv_rv, 
+scoring='precision', cv=skf, n_jobs=-1).mean().round(2)
+
+
+
+```
+
+```{python eval=FALSE, include=FALSE}
+
+
+file_out=open("adb_cv_precision_score","wb")
+pickle.dump(adb_cv_precision_score, file_out)
+file_out.close()
+
+
+
+```
+
+```{python include=FALSE}
+
+pickle_in=open("adb_cv_precision_score","rb")
+adb_cv_precision_score=pickle.load(pickle_in)
+
+
+
+
+```
+
+<br/><br/>
+
+### Gradient Boost
+
+<br/><br/>
+
+```{python}
+
+
+
+search_cv_gb=RandomizedSearchCV(estimator=gb,
+param_distributions=gb_params,n_iter=2, scoring='roc_auc', cv=5, verbose=1, refit=True, n_jobs=-1, random_state=2)
+
+
+
+```
+
+<br/><br/>
+
+```{python}
+
+
+search_cv_gb.fit(X_train_cv_tr, y_train_cv_rv)
+
+
+
+```
+
+<br/><br/>
+
+```{python eval=FALSE, include=FALSE}
+
+
+gb_clf_cv=search_cv_gb.best_estimator_
+
+
+
+```
+
+```{python eval=FALSE, include=FALSE}
+
+file_out=open("gb_clf_cv","wb")
+pickle.dump(gb_clf_cv, file_out)
+file_out.close()
+
+
+
+```
+
+```{python include=FALSE}
+
+pickle_in=open("gb_clf_cv","rb")
+gb_clf_cv=pickle.load(pickle_in)
+
+
+
+```
+
+<br/><br/>
+
+```{python echo=FALSE}
+
+
+gb_clf_cv
+
+
+
+
+```
+
+<br/><br/>
+
+```{python}
+
+
+gb_cv_f1_score=cross_val_score(gb_clf_cv, X_train_cv_tr, y_train_cv_rv, 
+scoring='f1', cv=skf, n_jobs=-1).mean().round(2)
+
+
+```
+
+```{python eval=FALSE, include=FALSE}
+
+file_out=open("gb_cv_f1_score","wb")
+pickle.dump(gb_cv_f1_score, file_out)
+file_out.close()
+
+
+
+```
+
+```{python include=FALSE}
+
+
+pickle_in=open("gb_cv_f1_score","rb")
+gb_cv_f1_score=pickle.load(pickle_in)
+
+
+```
+
+```{python}
+
+gb_cv_recall_score=cross_val_score(gb_clf_cv, X_train_cv_tr, y_train_cv_rv, 
+scoring='recall', cv=skf, n_jobs=-1).mean().round(2)
+
+
+
+```
+
+```{python eval=FALSE, include=FALSE}
+
+
+file_out=open("gb_cv_recall_score","wb")
+pickle.dump(gb_cv_recall_score, file_out)
+file_out.close()
+
+
+```
+
+```{python include=FALSE}
+
+pickle_in=open("gb_cv_recall_score","rb")
+gb_cv_recall_score=pickle.load(pickle_in)
+
+
+
+
+
+```
+
+```{python}
+
+gb_cv_precision_score=cross_val_score(gb_clf_cv, X_train_cv_tr, y_train_cv_rv, 
+scoring='precision', cv=skf, n_jobs=-1).mean().round(2)
+
+
+
+```
+
+```{python eval=FALSE, include=FALSE}
+
+file_out=open("gb_cv_precision_score","wb")
+pickle.dump(gb_cv_precision_score, file_out)
+file_out.close()
+
+
+
+
+```
+
+```{python include=FALSE}
+
+pickle_in=open("gb_cv_precision_score","rb")
+gb_cv_precision_score=pickle.load(pickle_in)
+
+
+
+
+
+```
+
+```{python eval=FALSE, include=FALSE}
+
+
+
+search_cv_xg=RandomizedSearchCV(estimator=estimator_xg,
+param_distributions=params_xg,n_iter=2, scoring='roc_auc', cv=5, verbose=3, refit=True, n_jobs=-1)
+
+
+
+
+```
+
+```{python eval=FALSE, include=FALSE}
+
+
+search_cv_xg.fit(X_train_cv_tr, y_train_cv_rv)
+
+
+
+```
+
+```{python eval=FALSE, include=FALSE}
+
+
+xg_clf_cv=search_cv_xg.best_estimator_
+
+
+```
+
+```{python eval=FALSE, include=FALSE}
+
+file_out=open("xg_clf_cv","wb")
+pickle.dump(xg_clf_cv, file_out)
+file_out.close()
+
+
+
+```
+
+```{python eval=FALSE, include=FALSE}
+
+pickle_in=open("xg_clf_cv","rb")
+xg_clf_cv=pickle.load(pickle_in)
+
+
+
+
+```
+
+```{python eval=FALSE, include=FALSE}
+
+xg_cv_f1_score=cross_val_score(xg_clf_cv, X_train_cv_tr, y_train_cv_rv, 
+scoring='f1', cv=skf, n_jobs=-1).mean().round(2)
+
+
+
+
+```
+
+```{python eval=FALSE, include=FALSE}
+
+
+
+file_out=open("xg_cv_f1_score","wb")
+pickle.dump(xg_cv_f1_score,file_out)
+file_out.close()
+
+
+```
+
+```{python eval=FALSE, include=FALSE}
+
+
+
+pickle_in=open("xg_cv_f1_score","rb")
+xg_cv_f1_score=pickle.load(pickle_in)
+
+
+
+
+
+
+```
+
+```{python eval=FALSE, include=FALSE}
+
+
+xg_cv_recall_score=cross_val_score(xg_clf_cv, X_train_cv_tr, y_train_cv_rv, 
+scoring='recall', cv=skf, n_jobs=-1).mean().round(2)
+
+
+```
+
+```{python eval=FALSE, include=FALSE}
+
+
+file_out=open("xg_cv_recall_score","wb")
+pickle.dump(xg_cv_recall_score, file_out)
+file_out.close()
+
+
+
+```
+
+```{python eval=FALSE, include=FALSE}
+
+
+pickle_in=open("xg_cv_recall_score","rb")
+xg_cv_recall_score=pickle.load(pickle_in)
+
+
+
+```
+
+```{python eval=FALSE, include=FALSE}
+
+
+xg_cv_precision_score=cross_val_score(xg_clf_cv, X_train_cv_tr, y_train_cv_rv, 
+scoring='precision', cv=skf, n_jobs=-1).mean().round(2)
+
+
+
+```
+
+```{python eval=FALSE, include=FALSE}
+
+file_out=open("xg_cv_precision_score","wb")
+pickle.dump(xg_cv_precision_score, file_out)
+file_out.close()
+
+
+
+
+
+```
+
+```{python eval=FALSE, include=FALSE}
+
+
+pickle_in=open("xg_cv_precision_score","rb")
+xg_cv_precision_score=pickle.load(pickle_in)
+
+
+
+```
+
+<br/><br/>
+
+### Light LGB
+
+<br/><br/>
+
+```{python}
+
+
+
+lgb_search_2 = RandomizedSearchCV(
+    estimator=lgb_model, param_distributions=params_lgb, 
+    n_iter=n_HP_points_to_test,
+    scoring='roc_auc',
+    cv=5,
+    refit=True,
+    random_state=1,
+    verbose=True, n_jobs=-1)
+
+
+
+```
+
+<br/><br/>
+
+```{python}
+
+
+lgb_search_2.fit(X_train_cv_tr, y_train_cv_rv)
+
+
+
+
+
+```
+
+<br/><br/>
+
+```{python}
+
+
+lgb_clf_cv=lgb_search_2.best_estimator_
+
+
+```
+
+```{python eval=FALSE, include=FALSE}
+
+
+file_out=open("lgb_clf_cv","wb")
+pickle.dump(lgb_clf_cv, file_out)
+file_out.close()
+
+
+
+```
+
+```{python include=FALSE}
+
+pickle_in=open("lgb_clf_cv","rb")
+lgb_clf_cv=pickle.load(pickle_in)
+
+
+
+```
+
+<br/><br/>
+
+```{python echo=FALSE}
+
+
+lgb_clf_cv
+
+
+
+```
+
+<br/><br/>
+
+```{python}
+
+
+lgb_cv_f1_score=cross_val_score(lgb_clf_cv, X_train_cv_tr, y_train_cv_rv, 
+scoring='f1', cv=skf, n_jobs=-1).mean().round(2)
+
+
+
+
+```
+
+```{python eval=FALSE, include=FALSE}
+
+
+
+file_out=open("lgb_cv_f1_score","wb")
+pickle.dump(lgb_cv_f1_score, file_out)
+file_out.close()
+
+
+```
+
+```{python include=FALSE}
+
+
+pickle_in=open("lgb_cv_f1_score","rb")
+lgb_cv_f1_score=pickle.load(pickle_in)
+
+
+```
+
+```{python}
+
+
+lgb_cv_recall_score=cross_val_score(lgb_clf_cv, X_train_cv_tr, y_train_cv_rv, 
+scoring='recall', cv=skf, n_jobs=-1).mean().round(2)
+
+
+```
+
+```{python eval=FALSE, include=FALSE}
+
+
+
+file_out=open("lgb_cv_recall_score","wb")
+pickle.dump(lgb_cv_recall_score, file_out)
+file_out.close()
+
+
+```
+
+```{python include=FALSE}
+
+
+pickle_in=open("lgb_cv_recall_score","rb")
+lgb_cv_recall_score=pickle.load(pickle_in)
+
+
+
+```
+
+```{python}
+
+
+lgb_cv_precision_score=cross_val_score(lgb_clf_cv, X_train_cv_tr, y_train_cv_rv, 
+scoring='precision', cv=skf, n_jobs=-1).mean().round(2)
+
+
+
+```
+
+```{python eval=FALSE, include=FALSE}
+
+
+file_out=open("lgb_cv_precision_score","wb")
+pickle.dump(lgb_cv_precision_score, file_out)
+file_out.close()
+
+
+
+```
+
+```{python include=FALSE}
+
+
+pickle_in=open("lgb_cv_precision_score","rb")
+lgb_cv_precision_score=pickle.load(pickle_in)
+
+
+
+
+```
+
+<br/><br/>
+
+### Cross validation Score Comparison
+
+<br/><br/>
+
+```{python}
+
+
+
+cross_val_scores=pd.DataFrame({'Model':['Support Vector Machine',  'Random Forest', 'Ada Boost','Gradient Boost',  'Light GBM'],
+'Recall':[svc_cv_recall_score, rf_cv_recall_score, adb_cv_recall_score,lgb_cv_recall_score,gb_cv_recall_score],
+'Precision':[svc_cv_precision_score, rf_cv_precision_score, adb_cv_precision_score, gb_cv_precision_score,lgb_cv_precision_score],
+'F1':[svc_cv_f1_score, rf_cv_f1_score, adb_cv_f1_score,gb_cv_f1_score, lgb_cv_f1_score]
+})
+
+
+
+```
+
+<br/><br/>
+
+```{python eval=FALSE, include=FALSE}
+
+
+file_out=open("cross_val_scores","wb")
+pickle.dump(cross_val_scores, file_out)
+file_out.close()
+
+
+
+
+
+```
+
+```{python include=FALSE}
+
+
+pickle_in=open("cross_val_scores","rb")
+cross_val_scores=pickle.load(pickle_in)
+
+
+```
+
+```{python eval=FALSE, include=FALSE}
+
+print(cross_val_scores)
+
+
+
+
+```
+
+```{python eval=FALSE, include=FALSE}
+
+r.r_cross_val_scores=cross_val_scores
+
+
+
+
+```
+
+```{r eval=FALSE, include=FALSE}
+
+
+glimpse(r_cross_val_scores)
+
+
+
+
+
+
+
+```
+
+```{r eval=FALSE, include=FALSE}
+
+
+saveRDS(r_cross_val_scores,"r_cross_val_scores")
+
+
+
+```
+
+```{r include=FALSE}
+
+
+r_cross_val_scores<-readRDS("r_cross_val_scores")
+
+
+
+```
+
+```{r eval=FALSE, include=FALSE}
+
+
+crossVal_prec_plt<-ggplot(r_cross_val_scores, aes(x=reorder(Model, -Precision), y = Precision, fill=Model))+ 
+  geom_bar(stat = "identity")+
+  ggtitle("Test Precision Scores")+
+  labs( fill = "Model")+
+  scale_y_continuous(labels=scales::percent_format())+
+  geom_text(aes(label=Precision,
+        vjust=.09),size=2.5, color="black")+
+  theme(axis.ticks.x=element_blank(),
+        axis.title.y=element_blank(),
+        axis.title.x=element_blank(),
+        axis.text.x=element_text(angle=70, size=8,hjust=1),
+        axis.text.y=element_blank(),
+        axis.ticks = element_blank(),
+        legend.position = "none",
+        plot.title=element_text(color="purple",face="bold.italic",size=10, hjust=0.5))+
+  expand_limits(y = c(0, 0.99))
+
+
+
+
+```
+
+```{r eval=FALSE, include=FALSE}
+
+
+crossVal_prec_plt
+
+
+
+
+
+
+```
+
+```{r}
+
+
+
+
+crossval_plt<-ggplot(r_cross_val_scores, aes(x = reorder( Model,-Precision), y=Precision,color=Model)) +
+    geom_segment( aes(xend=Model, yend=0)) +
+    geom_point( size=6, color="green") +
+  ggtitle("Cross Validation Scores")+
+  scale_y_continuous(labels=scales::percent_format())+
+  geom_text(aes(label=Precision,
+        vjust=0.7, hjust=0.3),size=2.0, color="black")+
+    theme(plot.title = element_text(color="blue", size=10, face="bold.italic", hjust=0.5))+
+   theme(axis.ticks.x=element_blank(),
+        axis.title.y=element_blank(),
+        axis.title.x=element_blank(),
+        axis.text.y=element_text(size=8,hjust=1),
+        axis.text.x=element_blank(),
+        axis.ticks = element_blank(),
+        legend.position = "none")+
+  expand_limits(x = c(0, 0.97))+
+  coord_flip()
+
+
+
+
+
+
+
+```
+
+<br/><br/>
+
+```{r echo=FALSE,fig.cap="Figure 42"}
+
+
+
+crossval_plt
+
+
+
+```
+
+<br/><br/> 
+
+<br/><br/>
+
+## Test Data
+
+<br/><br/>
+
+### Support Vector Machine
+
+<br/><br/>
+
+```{python}
+
+
+
+
+
+svc_clf_cv.fit(X_train_cv_tr, y_train_cv_rv)
+
+
+```
+
+<br/><br/>
+
+```{python}
+
+
+
+y_pred_svc_test=svc_clf_cv.predict(X_test_cv_tr)
+
+
+
+```
+
+<br/><br/>
+
+```{python eval=FALSE, include=FALSE}
+
+
+file_out=open("y_pred_svc_test","wb")
+pickle.dump(y_pred_svc_test, file_out)
+file_out.close()
+
+
+
+
+```
+
+```{python include=FALSE}
+
+
+
+pickle_in=open("y_pred_svc_test","rb")
+y_pred_svc_test=pickle.load(pickle_in)
+
+
+```
+
+<br/><br/>
+
+```{python echo=FALSE}
+
+
+
+print('******SVC Final Test Set Classification Report******')
+
+print(classification_report(y_test_cv_rv, y_pred_svc_test))
+
+
+```
+
+<br/><br/>
+
+```{python}
+
+
+
+svc_cv_test_prec=precision_score(y_test_cv_rv, y_pred_svc_test).round(2)
+
+
+
+```
+
+```{python eval=FALSE, include=FALSE}
+
+
+
+
+file_out=open("svc_cv_test_prec","wb")
+pickle.dump(svc_cv_test_prec, file_out)
+file_out.close()
+
+
+```
+
+```{python include=FALSE}
+
+
+pickle_in=open("svc_cv_test_prec","rb")
+svc_cv_test_prec=pickle.load(pickle_in)
+
+
+```
+
+<br/><br/>
+
+### Random Forrest
+
+<br/><br/>
+
+```{python}
+
+
+
+
+rf_clf_cv.fit(X_train_cv_tr, y_train_cv_rv)
+
+
+```
+
+<br/><br/>
+
+```{python}
+
+
+y_pred_rf_test=rf_clf_cv.predict(X_test_cv_tr)
+
+
+
+
+```
+
+<br/><br/>
+
+```{python eval=FALSE, include=FALSE}
+
+
+
+file_out=open("y_pred_rf_test","wb")
+pickle.dump(y_pred_rf_test, file_out)
+file_out.close()
+
+
+```
+
+```{python include=FALSE}
+
+
+pickle_in=open("y_pred_rf_test","rb")
+y_pred_rf_test=pickle.load(pickle_in)
+
+
+```
+
+<br/><br/>
+
+```{python echo=FALSE}
+
+
+
+print("*******Random Forest Final Test Set Classification Report********")
+
+print(classification_report(y_test_cv_rv, y_pred_rf_test))
+
+
+```
+
+<br/><br/>
+
+```{python}
+
+
+svc_cv_test_prec=precision_score(y_test_cv_rv, y_pred_svc_test).round(2)
+
+
+```
+
+```{python}
+
+rf_cv_test_prec=precision_score(y_test_cv_rv, y_pred_rf_test).round(2)
+
+
+
+
+
+```
+
+```{python eval=FALSE, include=FALSE}
+
+
+
+file_out=open("rf_cv_test_prec","wb")
+pickle.dump(rf_cv_test_prec, file_out)
+file_out.close()
+
+
+
+
+
+```
+
+```{python include=FALSE}
+
+pickle_in=open("rf_cv_test_prec","rb")
+rf_cv_test_prec=pickle.load(pickle_in)
+
+
+
+
+```
+
+<br/><br/>
+
+### AdaBoost
+
+<br/><br/>
+
+```{python}
+
+adb_clf_cv.fit(X_train_cv_tr, y_train_cv_rv)
+
+
+
+```
+
+<br/><br/>
+
+```{python}
+
+
+
+y_pred_adb_test=adb_clf_cv.predict(X_test_cv_tr)
+
+
+```
+
+<br/><br/>
+
+```{python eval=FALSE, include=FALSE}
+
+file_out=open("y_pred_adb_test","wb")
+pickle.dump(y_pred_adb_test, file_out)
+file_out.close()
+
+
+
+```
+
+```{python include=FALSE}
+
+
+pickle_in=open("y_pred_adb_test","rb")
+y_pred_adb_test=pickle.load(pickle_in)
+
+
+
+```
+
+<br/><br/>
+
+```{python echo=FALSE}
+
+
+print("*******AdaBoost Final Test Set Classification Report********")
+
+print(classification_report(y_test_cv_rv, y_pred_adb_test))
+
+
+```
+
+<br/><br/>
+
+```{python}
+
+
+
+
+adb_cv_test_prec=precision_score(y_test_cv_rv, y_pred_adb_test).round(2)
+
+
+
+```
+
+```{python eval=FALSE, include=FALSE}
+
+
+file_out=open("adb_cv_test_prec","wb")
+pickle.dump(adb_cv_test_prec, file_out)
+file_out.close()
+
+
+
+```
+
+```{python include=FALSE}
+
+
+
+pickle_in=open("adb_cv_test_prec","rb")
+adb_cv_test_prec=pickle.load(pickle_in)
+
+
+```
+
+<br/><br/>
+
+### Gradient Boosting
+
+<br/><br/>
+
+```{python}
+
+
+
+gb_clf_cv.fit(X_train_cv_tr, y_train_cv_rv)
+
+
+
+```
+
+<br/><br/>
+
+```{python}
+
+y_pred_gb_test=gb_clf_cv.predict(X_test_cv_tr)
+
+
+
+
+```
+
+<br/><br/>
+
+```{python eval=FALSE, include=FALSE}
+
+
+file_out=open("y_pred_gb_test","wb")
+pickle.dump(y_pred_gb_test, file_out)
+file_out.close()
+
+
+
+```
+
+```{python include=FALSE}
+
+
+
+pickle_in=open("y_pred_gb_test","rb")
+y_pred_gb_test=pickle.load(pickle_in)
+
+
+```
+
+<br/><br/>
+
+```{python echo=FALSE}
+
+print("*******Gradient Boost Final Test Set Classification Report********")
+
+print(classification_report(y_test_cv_rv, y_pred_gb_test))
+
+
+```
+
+<br/><br/>
+
+```{python}
+
+
+
+gb_cv_test_prec=precision_score(y_test_cv_rv, y_pred_gb_test).round(2)
+
+
+
+```
+
+```{python eval=FALSE, include=FALSE}
+
+
+file_out=open("gb_cv_test_prec","wb")
+pickle.dump(gb_cv_test_prec, file_out)
+file_out.close()
+
+
+
+```
+
+```{python include=FALSE}
+
+pickle_in=open("gb_cv_test_prec","rb")
+gb_cv_test_prec=pickle.load(pickle_in)
+
+
+
+
+```
+
+<br/><br/>
+
+### Light Gradient Boost
+
+<br/><br/>
+
+```{python}
+
+
+lgb_clf_cv.fit(X_train_cv_tr, y_train_cv_rv)
+
+
+
+```
+
+<br/><br/>
+
+```{python}
+
+
+
+y_pred_lgb_test=lgb_clf_cv.predict(X_test_cv_tr)
+
+
+```
+
+<br/><br/>
+
+```{python eval=FALSE, include=FALSE}
+
+file_out=open("y_pred_lgb_test","wb")
+pickle.dump(y_pred_lgb_test, file_out)
+file_out.close()
+
+
+
+
+```
+
+```{python include=FALSE}
+
+
+pickle_in=open("y_pred_lgb_test","rb")
+y_pred_lgb_test=pickle.load(pickle_in)
+
+
+
+```
+
+<br/><br/>
+
+```{python echo=FALSE}
+
+print("*****Light Gradient Boost Final Test Set Classification Report******")
+
+print(classification_report(y_test_cv_rv, y_pred_lgb_test))
+
+
+```
+
+<br/><br/>
+
+```{python}
+
+
+lgb_cv_test_prec=precision_score(y_test_cv_rv, y_pred_lgb_test).round(2)
+
+
+
+
+```
+
+```{python eval=FALSE, include=FALSE}
+
+file_out=open("lgb_cv_test_prec","wb")
+pickle.dump(lgb_cv_test_prec, file_out)
+file_out.close()
+
+
+
+
+```
+
+```{python include=FALSE}
+
+
+pickle_in=open("lgb_cv_test_prec","rb")
+lgb_cv_test_prec=pickle.load(pickle_in)
+
+
+
+
+```
+
+```{python eval=FALSE, include=FALSE}
+
+
+test_val_scores[['Model', 'Precision Validation', 'Precision Test']]
+
+
+
+
+```
+
+<br/><br/>
+
+## Test Scores
+
+<br/><br/>
+
+```{python}
+
+
+
+final_test_scores=pd.DataFrame({'Model':['Support Vector Machine',  'Random Forest', 'Ada Boost','Gradient Boost',  'Light GBM'],'Precision':[svc_cv_test_prec, rf_cv_test_prec, adb_cv_test_prec,gb_cv_test_prec, lgb_cv_test_prec],
+
+})
+
+
+
+
+
+
+```
+
+```{python eval=FALSE, include=FALSE}
+
+file_out=open("final_test_scores","wb")
+pickle.dump(final_test_scores, file_out)
+file_out.close()
+
+
+
+
+
+```
+
+```{python include=FALSE}
+
+
+pickle_in=open("final_test_scores","rb")
+final_test_scores=pickle.load(pickle_in)
+
+
+
+```
+
+```{python eval=FALSE, include=FALSE}
+
+
+r.r_final_test_scores=final_test_scores
+
+
+
+```
+
+```{r eval=FALSE, include=FALSE}
+
+glimpse(r_final_test_scores)
+
+
+
+
+```
+
+```{r eval=FALSE, include=FALSE}
+
+
+saveRDS(r_final_test_scores,"r_final_test_scores")
+
+
+
+```
+
+```{r include=FALSE}
+
+
+r_final_test_scores<-readRDS("r_final_test_scores")
+
+
+
+```
+
+<br/><br/>
+
+```{r}
+
+
+finl_prec_plt<-ggplot(r_final_test_scores, aes(x=reorder(Model, -Precision), y = Precision, fill=Model))+ 
+  geom_bar(stat = "identity")+
+  ggtitle("Final Test Precision Scores")+
+  labs( fill = "Model")+
+  scale_y_continuous(labels=scales::percent_format())+
+  geom_text(aes(label=Precision,
+        vjust=.09),size=5, color="black")+
+  theme(axis.ticks.x=element_blank(),
+        axis.title.y=element_blank(),
+        axis.title.x=element_blank(),
+        axis.text.x=element_text(angle=70, size=8,hjust=1),
+        axis.text.y=element_blank(),
+        axis.ticks = element_blank(),
+        legend.position = "none",
+        plot.title=element_text(color="purple",face="bold.italic",size=10, hjust=0.5))+
+  expand_limits(y = c(0, 0.99))
+
+
+
+
+```
+
+<br/><br/>
+
+```{r echo=FALSE,fig.cap="Figure 43"}
+
+
+finl_prec_plt
+
+
+```
+
+<br/><br/> <br/><br/>
+
+## Feature Importance
+
+<br/><br/>
+
+### Random Forest
+
+<br/><br/>
+
+```{python}
+
+
+feat_dict_final_rf= {}
+for col, val in sorted(zip(X_train_cv_tr.columns, rf_clf_cv.feature_importances_),key=lambda x:x[1],reverse=True):
+  feat_dict_final_rf[col]=val
+
+
+
+
+```
+
+```{python}
+
+
+feat_final_rf_df = pd.DataFrame({'Feature':feat_dict_final_rf.keys(),'Importance':feat_dict_final_rf.values()})
+
+
+
+```
+
+```{python}
+
+
+feat_final_rf_tp5=feat_final_rf_df.nlargest(5,"Importance")
+
+
+
+
+```
+
+```{python eval=FALSE, include=FALSE}
+
+
+file_out=open("feat_final_rf_tp5","wb")
+pickle.dump(feat_final_rf_tp5, file_out)
+file_out.close()
+
+
+
+```
+
+```{python include=FALSE}
+
+
+
+pickle_in=open("feat_final_rf_tp5","rb")
+feat_final_rf_tp5=pickle.load(pickle_in)
+
+
+```
+
+```{python}
+
+
+
+values = feat_final_rf_tp5.Importance    
+idx = feat_final_rf_tp5.Feature
+plt.figure(figsize=(15,10))
+clrs = ['green' if (x < max(values)) else 'red' for x in values ]
+sns.barplot(y=idx,x=values,palette=clrs).set(title='Important Features Final Random Forest Model')
+
+plt.ylabel("Features", fontsize=9)
+
+plt.tick_params(axis='x', which='major', labelsize=8)
+
+plt.tick_params(axis='y', labelsize=8)
+
+
+
+```
+
+<br/><br/>
+
+```{python echo=FALSE,fig.cap="Figure 44"}
+
+plt.show()
+
+plt.clf()
+
+
+```
+
+<br/><br/> <br/><br/>
+
+### AdaBoost
+
+<br/><br/>
+
+```{python}
+
+
+feat_dict_final_adb= {}
+for col, val in sorted(zip(X_train_cv_tr.columns, adb_clf_cv.feature_importances_),key=lambda x:x[1],reverse=True):
+  feat_dict_final_adb[col]=val
+
+
+
+```
+
+```{python}
+
+
+
+
+feat_final_adb_df = pd.DataFrame({'Feature':feat_dict_final_adb.keys(),'Importance':feat_dict_final_adb.values()})
+
+
+
+
+
+```
+
+```{python}
+
+
+
+feat_final_adb_tp5=feat_final_adb_df.nlargest(5,"Importance")
+
+
+
+```
+
+```{python eval=FALSE, include=FALSE}
+
+
+file_out=open("feat_final_adb_tp5","wb")
+pickle.dump(feat_final_adb_tp5, file_out)
+file_out.close()
+
+
+
+
+```
+
+```{python include=FALSE}
+
+
+
+pickle_in=open("feat_final_adb_tp5","rb")
+feat_final_adb_tp5=pickle.load(pickle_in)
+
+
+
+```
+
+<br/><br/>
+
+```{python}
+
+
+
+
+values = feat_final_adb_tp5.Importance    
+idx = feat_final_adb_tp5.Feature
+plt.figure(figsize=(15,10))
+clrs = ['green' if (x < max(values)) else 'red' for x in values ]
+sns.barplot(y=idx,x=values,palette=clrs).set(title='Important Features Final AdaBoost Model')
+
+plt.ylabel("Features", fontsize=9)
+
+plt.tick_params(axis='x', which='major', labelsize=8)
+
+plt.tick_params(axis='y', labelsize=8)
+
+
+
+
+```
+
+<br/><br/>
+
+```{python echo=FALSE,fig.cap="Figure 45"}
+
+plt.show()
+
+plt.clf()
+
+
+
+```
+
+<br/><br/>
+
+### Gradient Boosting
+
+<br/><br/>
+
+```{python}
+
+
+feat_dict_final_gb= {}
+for col, val in sorted(zip(X_train_cv_tr.columns, gb_clf_cv.feature_importances_),key=lambda x:x[1],reverse=True):
+  feat_dict_final_gb[col]=val
+
+
+
+```
+
+```{python}
+
+
+
+
+feat_final_gb_df = pd.DataFrame({'Feature':feat_dict_final_gb.keys(),'Importance':feat_dict_final_gb.values()})
+
+
+
+
+
+```
+
+```{python}
+
+
+
+feat_final_gb_tp5=feat_final_gb_df.nlargest(5,"Importance")
+
+
+
+```
+
+```{python eval=FALSE, include=FALSE}
+
+
+file_out=open("feat_final_gb_tp5","wb")
+pickle.dump(feat_final_gb_tp5, file_out)
+file_out.close()
+
+
+
+
+```
+
+```{python include=FALSE}
+
+
+
+pickle_in=open("feat_final_gb_tp5","rb")
+feat_final_gb_tp5=pickle.load(pickle_in)
+
+
+
+```
+
+<br/><br/>
+
+```{python}
+
+
+
+
+values = feat_final_gb_tp5.Importance    
+idx = feat_final_gb_tp5.Feature
+plt.figure(figsize=(15,10))
+clrs = ['green' if (x < max(values)) else 'red' for x in values ]
+sns.barplot(y=idx,x=values,palette=clrs).set(title='Important Features Final Random Forest Model')
+
+plt.ylabel("Features", fontsize=5)
+
+plt.tick_params(axis='x', which='major', labelsize=5)
+
+plt.tick_params(axis='y', labelsize=5)
+
+
+
+
+```
+
+<br/><br/>
+
+```{python echo=FALSE,fig.cap="Figure 46"}
+
+plt.show()
+
+plt.clf()
+
+
+
+```
+
+<br/><br/>
+
+### Light Gradient Boosting
+
+<br/><br/>
+
+```{python}
+
+
+feat_dict_final_lgb= {}
+for col, val in sorted(zip(X_train_cv_tr.columns, lgb_clf_cv.feature_importances_),key=lambda x:x[1],reverse=True):
+  feat_dict_final_lgb[col]=val
+
+
+
+```
+
+```{python}
+
+
+
+
+feat_final_lgb_df = pd.DataFrame({'Feature':feat_dict_final_lgb.keys(),'Importance':feat_dict_final_lgb.values()})
+
+
+
+
+
+```
+
+```{python}
+
+
+
+feat_final_lgb_tp5=feat_final_lgb_df.nlargest(5,"Importance")
+
+
+
+```
+
+```{python eval=FALSE, include=FALSE}
+
+
+file_out=open("feat_final_lgb_tp5","wb")
+pickle.dump(feat_final_lgb_tp5, file_out)
+file_out.close()
+
+
+
+
+```
+
+```{python include=FALSE}
+
+
+
+pickle_in=open("feat_final_lgb_tp5","rb")
+feat_final_lgb_tp5=pickle.load(pickle_in)
+
+
+
+```
+
+<br/><br/>
+
+```{python}
+
+
+
+
+values = feat_final_lgb_tp5.Importance    
+idx = feat_final_lgb_tp5.Feature
+plt.figure(figsize=(15,10))
+clrs = ['green' if (x < max(values)) else 'red' for x in values ]
+sns.barplot(y=idx,x=values,palette=clrs).set(title='Important Features Final Light Gradient Boost Model')
+
+plt.ylabel("Features", fontsize=9)
+
+plt.tick_params(axis='x', which='major', labelsize=8)
+
+plt.tick_params(axis='y', labelsize=8)
+
+
+
+
+```
+
+<br/><br/>
+
+```{python echo=FALSE,fig.cap="Figure 47"}
+
+
+plt.show()
+
+plt.clf()
+
+```
+
+<br/><br/>
+
+## Final Model Metrics
+
+<br/><br/>
+
+There was no change between cross validation and test precision scores for support vector machines and AdaBoost models (*Figures 42 and 43*).  The models random forest, gradient boost, and light gradient boost improved by one percent in the test set precision score compared to the cross validation set (*Figures 42 and 43*). Based on the cross validation and test precision scores we can conclude there is no overfitting of our final models. 
+
+<br/><br/>
+
+# Insights
+
+
+
+
+<br/><br/>
+
+Our final models proved very good at classifying fraudulent claims.  In addition, all models minimized incorrectly classifying non-fraudulent claims as fraudulent as only one out of ten claims were incorrectly classified.  For predicting on outside unseen data, any of our final models will perform well.  Support vector machines proved best at classifying fraudulent claims albeit only by a two percent margin over the other models. 
+
+For interpretability, the ensemble models may be a better choice.  Each has common features in their top five most important.  However, the ensemble models are split when comparing the effect of the highest important feature.  Random forest (*Figure 44*) and gradient boost (*Figure 46*) have the categorical feature “Severity of Incident-Major Damage” as the most important feature.  This feature’s importance is twice that of the next closest feature.   In comparison, Adaboost (*Figure 45*) and light gradient boost (*Figure 47*) have as their top five important features all numerical features.  Additionally, these models’ importance’s are grouped closer together such that no one feature dominates the classification of events.  These differences may not be important as all perform well in the task at hand.  
+
+
+<br/><br/>
+
 
 
 
